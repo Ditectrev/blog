@@ -73,9 +73,9 @@ const siteMetadata = {
       metadata: '0',
       // theme example: light, dark, dark_dimmed, dark_high_contrast
       // transparent_dark, preferred_color_scheme, custom
-      theme: 'light_high_contrast',
+      theme: 'light', // TODO: Find a permanent solution for this, more information: https://github.com/timlrx/tailwind-nextjs-starter-blog/issues/617
       // theme when dark mode
-      darkTheme: 'dark_high_contrast',
+      darkTheme: 'dark',
       // If the theme option above is set to 'custom`
       // please provide a link below to your custom theme css file.
       // example: https://giscus.app/themes/custom_example.css
