@@ -20,7 +20,7 @@ const siteMetadata = {
   linkedin: 'https://www.linkedin.com/company/ditectrev/',
   // threads: 'https://www.threads.net',
   instagram: 'https://www.instagram.com/ditectrev',
-  medium: 'https://medium.com/',
+  medium: 'https://medium.com/@ditectrev',
   // bluesky: 'https://bsky.app/',
   locale: 'en-US',
   // set to true if you want a navbar fixed to the top
