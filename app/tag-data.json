@@ -1,6 +1,10 @@
 {
   "css": 1,
   "frontend": 1,
-  "software-development": 1,
-  "web-development": 1
+  "software-development": 2,
+  "web-development": 1,
+  "android": 1,
+  "androidx": 1,
+  "jetifier": 1,
+  "mobile-development": 1
 }
