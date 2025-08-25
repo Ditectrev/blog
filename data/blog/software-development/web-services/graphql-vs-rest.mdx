@@ -56,7 +56,7 @@ REST is built on six fundamental principles:
 
 ### REST API Example with Full CRUD Operations:
 
-```javascript:numberLines
+```javascript
 // Get all users with pagination
 GET /api/users?page=1&limit=10&sort=name&order=asc
 
@@ -117,7 +117,7 @@ Content-Type: application/json
 
 ### HTTP Status Codes in REST:
 
-```javascript:numberLines
+```javascript
 // Success Responses
 200 OK - Request succeeded
 201 Created - Resource created successfully
@@ -185,7 +185,7 @@ GraphQL is built on several key concepts:
 
 ### GraphQL Schema Example:
 
-```graphql:numberLines
+```graphql
 # Schema Definition
 type User {
   id: ID!
@@ -260,7 +260,7 @@ scalar DateTime
 
 ### GraphQL Query Examples:
 
-```graphql:numberLines
+```graphql
 # Basic Query
 query GetUser($userId: ID!) {
   user(id: $userId) {
@@ -341,7 +341,7 @@ query SearchUsers($query: String!, $limit: Int = 10, $offset: Int = 0) {
 
 ### GraphQL Mutation Examples:
 
-```graphql:numberLines
+```graphql
 # Create User Mutation
 mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
@@ -382,7 +382,7 @@ mutation BatchCreateUsers($inputs: [CreateUserInput!]!) {
 
 ### GraphQL Subscription Example:
 
-```graphql:numberLines
+```graphql
 # Real-time User Updates
 subscription UserUpdates($userId: ID!) {
   userUpdated(id: $userId) {
@@ -443,7 +443,7 @@ subscription NewPosts {
 
 #### REST Data Fetching:
 
-```javascript:numberLines
+```javascript
 // REST requires multiple requests for related data
 // Request 1: Get user
 const userResponse = await fetch('/api/users/123');
@@ -466,7 +466,7 @@ const settings = await settingsResponse.json();
 
 #### GraphQL Data Fetching:
 
-```graphql:numberLines
+```graphql
 # Single request gets all needed data
 query GetUserComplete($userId: ID!) {
   user(id: $userId) {
@@ -497,7 +497,7 @@ query GetUserComplete($userId: ID!) {
 
 #### REST Error Handling:
 
-```javascript:numberLines
+```javascript
 // REST uses HTTP status codes
 try {
   const response = await fetch('/api/users/123');
@@ -520,7 +520,7 @@ try {
 
 #### GraphQL Error Handling:
 
-```graphql:numberLines
+```graphql
 # GraphQL returns partial data with errors
 query GetUserWithPosts($userId: ID!) {
   user(id: $userId) {
@@ -561,7 +561,7 @@ query GetUserWithPosts($userId: ID!) {
 
 #### REST Caching:
 
-```javascript:numberLines
+```javascript
 // REST has built-in HTTP caching
 const response = await fetch('/api/users/123', {
   headers: {
@@ -578,7 +578,7 @@ const response = await fetch('/api/users/123', {
 
 #### GraphQL Caching:
 
-```javascript:numberLines
+```javascript
 // GraphQL requires custom caching strategies
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
