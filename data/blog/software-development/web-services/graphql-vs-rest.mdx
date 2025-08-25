@@ -34,18 +34,7 @@ REST is built on six fundamental principles:
 5. **Layered System**: Architecture can be layered for scalability
 6. **Code on Demand**: Optional execution of code on the client
 
-### Core REST Principles
-
-REST is built on six fundamental principles:
-
-1. **Client-Server Architecture**: Separation of concerns between client and server
-2. **Stateless**: Each request contains all necessary information
-3. **Cacheable**: Responses can be cached at various levels
-4. **Uniform Interface**: Consistent patterns across all endpoints
-5. **Layered System**: Architecture can be layered for scalability
-6. **Code on Demand**: Optional execution of code on the client
-
-### Key Characteristics of REST:
+### Key Characteristics of REST
 
 - **Resource-based**: Each endpoint represents a specific resource (e.g., `/users`, `/posts`)
 - **HTTP methods**: Uses standard HTTP verbs (GET, POST, PUT, DELETE, PATCH)
@@ -54,7 +43,7 @@ REST is built on six fundamental principles:
 - **Uniform interface**: Consistent patterns across all endpoints
 - **HATEOAS**: Hypermedia as the Engine of Application State (optional)
 
-### REST API Example with Full CRUD Operations:
+### REST API Example with Full CRUD Operations
 
 ```javascript
 // Get all users with pagination
@@ -115,7 +104,7 @@ Content-Type: application/json
 }
 ```
 
-### HTTP Status Codes in REST:
+### HTTP Status Codes in REST
 
 ```javascript
 // Success Responses
@@ -137,7 +126,7 @@ Content-Type: application/json
 503 Service Unavailable - Service temporarily unavailable
 ```
 
-### Advantages of REST:
+### Advantages of REST
 
 1. **Simplicity**: Easy to understand and implement
 2. **Wide adoption**: Extensive tooling and community support
@@ -145,10 +134,10 @@ Content-Type: application/json
 4. **Stateless**: Scales horizontally without session management
 5. **Standards**: Follows HTTP conventions
 6. **Browser support**: Native browser support for HTTP methods
-7. **CDN friendly**: Easy to cache and distribute globally
+7. **CDN-friendly**: Easy to cache and distribute globally
 8. **Monitoring**: Standard HTTP monitoring tools work out of the box
 
-### Limitations of REST:
+### Limitations of REST
 
 1. **Over-fetching**: Often returns more data than needed
 2. **Under-fetching**: May require multiple requests for related data
@@ -172,7 +161,7 @@ GraphQL is built on several key concepts:
 4. **Type System**: Strong typing for all data structures
 5. **Introspection**: Self-documenting API capabilities
 
-### Key Characteristics of GraphQL:
+### Key Characteristics of GraphQL
 
 - **Query language**: Clients specify exactly what data they want
 - **Single endpoint**: All requests go through one endpoint (usually `/graphql`)
@@ -183,7 +172,7 @@ GraphQL is built on several key concepts:
 - **Aliases**: Multiple queries in a single request
 - **Fragments**: Reusable query parts
 
-### GraphQL Schema Example:
+### GraphQL Schema Example
 
 ```graphql
 # Schema Definition
@@ -258,7 +247,7 @@ input ProfileInput {
 scalar DateTime
 ```
 
-### GraphQL Query Examples:
+### GraphQL Query Examples
 
 ```graphql
 # Basic Query
@@ -339,7 +328,7 @@ query SearchUsers($query: String!, $limit: Int = 10, $offset: Int = 0) {
 }
 ```
 
-### GraphQL Mutation Examples:
+### GraphQL Mutation Examples
 
 ```graphql
 # Create User Mutation
@@ -380,7 +369,7 @@ mutation BatchCreateUsers($inputs: [CreateUserInput!]!) {
 }
 ```
 
-### GraphQL Subscription Example:
+### GraphQL Subscription Example
 
 ```graphql
 # Real-time User Updates
@@ -413,7 +402,7 @@ subscription NewPosts {
 }
 ```
 
-### Advantages of GraphQL:
+### Advantages of GraphQL
 
 1. **Efficient data fetching**: Get exactly what you need in one request
 2. **Strong typing**: Compile-time error checking
@@ -426,7 +415,7 @@ subscription NewPosts {
 9. **Built-in documentation**: Schema introspection
 10. **Graph structure**: Natural representation of data relationships
 
-### Limitations of GraphQL:
+### Limitations of GraphQL
 
 1. **Complexity**: Steeper learning curve
 2. **Caching**: More complex than HTTP caching
@@ -441,7 +430,7 @@ subscription NewPosts {
 
 ### Data Fetching Patterns
 
-#### REST Data Fetching:
+#### REST Data Fetching
 
 ```javascript
 // REST requires multiple requests for related data
@@ -464,7 +453,7 @@ const settings = await settingsResponse.json();
 // Total: 4 HTTP requests, potential over-fetching
 ```
 
-#### GraphQL Data Fetching:
+#### GraphQL Data Fetching
 
 ```graphql
 # Single request gets all needed data
@@ -495,7 +484,7 @@ query GetUserComplete($userId: ID!) {
 
 ### Error Handling Comparison
 
-#### REST Error Handling:
+#### REST Error Handling
 
 ```javascript
 // REST uses HTTP status codes
@@ -518,7 +507,7 @@ try {
 }
 ```
 
-#### GraphQL Error Handling:
+#### GraphQL Error Handling
 
 ```graphql
 # GraphQL returns partial data with errors
@@ -559,7 +548,7 @@ query GetUserWithPosts($userId: ID!) {
 
 ### Caching Strategies
 
-#### REST Caching:
+#### REST Caching
 
 ```javascript
 // REST has built-in HTTP caching
@@ -576,7 +565,7 @@ const response = await fetch('/api/users/123', {
 // Simple and effective
 ```
 
-#### GraphQL Caching:
+#### GraphQL Caching
 
 ```javascript
 // GraphQL requires custom caching strategies
