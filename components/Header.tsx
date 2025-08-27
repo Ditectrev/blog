@@ -59,7 +59,7 @@ const Header = () => {
               <Link
                 key={link.title}
                 href={link.href}
-                className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1"
+                className="flex items-center gap-1 m-1 font-medium text-gray-900 dark:text-gray-100 hover:text-primary-500 dark:hover:text-primary-400"
               >
                 {link.title}
                 {link.external && (
