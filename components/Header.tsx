@@ -52,18 +52,18 @@ const Header = () => {
         </div>
       </Link>
       <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
-        <div className="no-scrollbar hidden max-w-40 items-center gap-x-4 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
+        <div className="no-scrollbar hidden w-full items-center gap-x-4 overflow-x-auto lg:flex">
           {headerNavLinks
             .filter((link) => link.href !== '/')
             .map((link) => (
               <Link
                 key={link.title}
                 href={link.href}
-                className="flex items-center gap-1 m-1 font-medium text-gray-900 dark:text-gray-100 hover:text-primary-500 dark:hover:text-primary-400"
+                className="hover:text-primary-500 dark:hover:text-primary-400 m-1 flex items-center gap-1 font-medium text-gray-900 dark:text-gray-100 whitespace-nowrap"
               >
                 {link.title}
                 {link.external && (
-                  <ExternalLink className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                  <ExternalLink className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                 )}
               </Link>
             ))}

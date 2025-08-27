@@ -1,10 +1,19 @@
 {
-  "css": 1,
-  "frontend": 1,
-  "software-development": 2,
-  "web-development": 1,
+  "api": 1,
+  "architecture": 1,
+  "backend": 1,
+  "database": 1,
+  "graphql": 1,
+  "performance": 1,
+  "programming": 1,
+  "rest": 1,
+  "web-development": 2,
+  "web-services": 1,
   "android": 1,
   "androidx": 1,
   "jetifier": 1,
-  "mobile-development": 1
+  "mobile-development": 1,
+  "software-development": 2,
+  "css": 1,
+  "frontend": 1
 }

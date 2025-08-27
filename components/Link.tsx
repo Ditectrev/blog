@@ -10,7 +10,8 @@ const CustomLink = ({
 }: LinkProps & AnchorHTMLAttributes<HTMLAnchorElement> & { external?: boolean }) => {
   const isInternalLink = href && href.startsWith('/')
   const isAnchorLink = href && href.startsWith('#')
-  const isExternalLink = external || (href && (href.startsWith('http://') || href.startsWith('https://')))
+  const isExternalLink =
+    external || (href && (href.startsWith('http://') || href.startsWith('https://')))
 
   if (isInternalLink) {
     return <Link className="break-words" href={href} {...rest} />
