@@ -82,7 +82,7 @@ const MobileNav = () => {
                   >
                     {link.title}
                     {link.external && (
-                      <ExternalLink className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                      <ExternalLink className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                     )}
                   </Link>
                 ))}
