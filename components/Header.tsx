@@ -9,6 +9,7 @@ import SearchButton from './SearchButton'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { ExternalLink } from './social-icons/icons'
 
 const Header = () => {
   const { resolvedTheme } = useTheme()
@@ -58,9 +59,12 @@ const Header = () => {
               <Link
                 key={link.title}
                 href={link.href}
-                className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100"
+                className="hover:text-primary-500 dark:hover:text-primary-400 m-1 font-medium text-gray-900 dark:text-gray-100 flex items-center gap-1"
               >
                 {link.title}
+                {link.external && (
+                  <ExternalLink className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+                )}
               </Link>
             ))}
         </div>
