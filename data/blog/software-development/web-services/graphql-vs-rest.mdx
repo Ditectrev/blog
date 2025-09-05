@@ -23,18 +23,16 @@ This comprehensive guide will help you understand the key differences between RE
 
 REST API (Representational State Transfer) has been the dominant API architecture for over two decades, and for good reason. It's simple, stateless, and follows well-established HTTP conventions. REST APIs are the foundation of modern web services and are used by millions of applications worldwide.
 
-### Key Characteristics of REST
+### Core REST Principles
 
-REST is built on six fundamental principles and follows these key characteristics:
+REST is built on six fundamental principles:
 
-- **Resource-based**: Each endpoint represents a specific resource (e.g., `/users`, `/posts`)
-- **HTTP methods**: Uses standard HTTP verbs (GET, POST, PUT, DELETE, PATCH)
+- **Client-Server Architecture**: Separation of concerns between client and server
 - **Stateless**: Each request contains all necessary information
 - **Cacheable**: Responses can be cached at various levels
-- **Uniform interface**: Consistent patterns across all endpoints
-- **Client-Server Architecture**: Separation of concerns between client and server
+- **Uniform Interface**: Consistent patterns across all endpoints
 - **Layered System**: Architecture can be layered for scalability
-- **HATEOAS**: Hypermedia as the Engine of Application State (optional)
+- **Code on Demand**: Optional execution of code on the client
 
 ### REST API Example with Full CRUD Operations
 
@@ -144,9 +142,9 @@ Content-Type: application/json
 
 GraphQL, developed by Facebook in 2015, offers a more flexible and efficient approach to data fetching. It allows clients to request exactly the data they need, nothing more and nothing less. GraphQL has revolutionized how developers think about API design and data retrieval.
 
-### Key Characteristics of GraphQL
+### Core GraphQL Principles
 
-GraphQL is built on several key concepts and offers these characteristics:
+GraphQL is built on several key concepts and principles:
 
 - **Query language**: Clients specify exactly what data they want
 - **Single endpoint**: All requests go through one endpoint (usually `/graphql`)
