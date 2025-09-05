@@ -23,24 +23,17 @@ This comprehensive guide will help you understand the key differences between RE
 
 REST API (Representational State Transfer) has been the dominant API architecture for over two decades, and for good reason. It's simple, stateless, and follows well-established HTTP conventions. REST APIs are the foundation of modern web services and are used by millions of applications worldwide.
 
-### Core REST Principles
-
-REST is built on six fundamental principles:
-
-1. **Client-Server Architecture**: Separation of concerns between client and server
-2. **Stateless**: Each request contains all necessary information
-3. **Cacheable**: Responses can be cached at various levels
-4. **Uniform Interface**: Consistent patterns across all endpoints
-5. **Layered System**: Architecture can be layered for scalability
-6. **Code on Demand**: Optional execution of code on the client
-
 ### Key Characteristics of REST
+
+REST is built on six fundamental principles and follows these key characteristics:
 
 - **Resource-based**: Each endpoint represents a specific resource (e.g., `/users`, `/posts`)
 - **HTTP methods**: Uses standard HTTP verbs (GET, POST, PUT, DELETE, PATCH)
 - **Stateless**: Each request contains all necessary information
 - **Cacheable**: Responses can be cached at various levels
 - **Uniform interface**: Consistent patterns across all endpoints
+- **Client-Server Architecture**: Separation of concerns between client and server
+- **Layered System**: Architecture can be layered for scalability
 - **HATEOAS**: Hypermedia as the Engine of Application State (optional)
 
 ### REST API Example with Full CRUD Operations
@@ -151,23 +144,17 @@ Content-Type: application/json
 
 GraphQL, developed by Facebook in 2015, offers a more flexible and efficient approach to data fetching. It allows clients to request exactly the data they need, nothing more and nothing less. GraphQL has revolutionized how developers think about API design and data retrieval.
 
-### Core GraphQL Concepts
-
-GraphQL is built on several key concepts:
-
-1. **Schema Definition Language (SDL)**: Defines the API structure
-2. **Resolvers**: Functions that fetch data for each field
-3. **Query Language**: Client-specified data requirements
-4. **Type System**: Strong typing for all data structures
-5. **Introspection**: Self-documenting API capabilities
-
 ### Key Characteristics of GraphQL
+
+GraphQL is built on several key concepts and offers these characteristics:
 
 - **Query language**: Clients specify exactly what data they want
 - **Single endpoint**: All requests go through one endpoint (usually `/graphql`)
-- **Strong typing**: Schema defines available data and operations
+- **Strong typing**: Schema defines available data and operations with compile-time checking
+- **Schema Definition Language (SDL)**: Defines the API structure
+- **Resolvers**: Functions that fetch data for each field
 - **Real-time updates**: Built-in subscription support
-- **Introspection**: Self-documenting API
+- **Introspection**: Self-documenting API capabilities
 - **Field-level resolution**: Each field can have its own resolver
 - **Aliases**: Multiple queries in a single request
 - **Fragments**: Reusable query parts
@@ -216,7 +203,6 @@ type Mutation {
   createUser(input: CreateUserInput!): User!
   updateUser(id: ID!, input: UpdateUserInput!): User!
   deleteUser(id: ID!): Boolean!
-  createPost(input: CreatePostInput!): Post!
 }
 
 type Subscription {
@@ -332,7 +318,7 @@ query SearchUsers($query: String!, $limit: Int = 10, $offset: Int = 0) {
 
 ```graphql
 # Create User Mutation
-mutation CreateUser($input: CreateUserInput!) {
+mutation createUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
     name
@@ -346,7 +332,7 @@ mutation CreateUser($input: CreateUserInput!) {
 }
 
 # Update User Mutation
-mutation UpdateUser($id: ID!, $input: UpdateUserInput!) {
+mutation updateUser($id: ID!, $input: UpdateUserInput!) {
   updateUser(id: $id, input: $input) {
     id
     name
@@ -359,13 +345,9 @@ mutation UpdateUser($id: ID!, $input: UpdateUserInput!) {
   }
 }
 
-# Batch Operations
-mutation BatchCreateUsers($inputs: [CreateUserInput!]!) {
-  batchCreateUsers(inputs: $inputs) {
-    id
-    name
-    email
-  }
+# Delete User Mutation
+mutation deleteUser($id: ID!) {
+  deleteUser(id: $id)
 }
 ```
 
@@ -462,16 +444,16 @@ query GetUserComplete($userId: ID!) {
     id
     name
     email
-    profile {
-      bio
-      location
-      avatar
-    }
     posts {
       id
       title
       content
       createdAt
+    }
+    profile {
+      bio
+      location
+      avatar
     }
     settings {
       theme
