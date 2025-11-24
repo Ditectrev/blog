@@ -2,7 +2,7 @@ import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
-import { Space_Grotesk } from 'next/font/google'
+import { Philosopher, Lora } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
@@ -12,10 +12,17 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 
-const space_grotesk = Space_Grotesk({
+const philosopher = Philosopher({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-space-grotesk',
+  weight: ['400', '700'],
+  variable: '--font-philosopher',
+})
+
+const lora = Lora({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-lora',
 })
 
 export const metadata: Metadata = {
@@ -64,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang={siteMetadata.language}
-      className={`${space_grotesk.variable} scroll-smooth`}
+      className={`${philosopher.variable} ${lora.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <link

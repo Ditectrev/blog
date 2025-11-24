@@ -7,9 +7,9 @@
 /* Core theme configuration */
 @theme {
   /* Font families */
-  --font-sans:
-    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: var(--font-lora), ui-serif, Georgia, serif;
+
+  --font-heading: var(--font-philosopher), ui-sans-serif, system-ui, sans-serif;
 
   /* Colors */
   /* Brand color #3f51b5 converted to OKLCH and scaled for accessibility */
@@ -76,6 +76,20 @@
     outline: 2px solid;
     border-radius: var(--radius-sm);
     outline-color: var(--color-primary-500);
+  }
+
+  /* Apply Philosopher font to headings and buttons */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
+
+  button {
+    font-family: var(--font-heading);
   }
 }
 
