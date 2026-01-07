@@ -1,0 +1,1452 @@
+---
+title: 'slice() vs substring() vs substr(): Complete JavaScript String Methods Comparison'
+date: '2026-01-10'
+tags: ['frontend', 'javascript', 'software development', 'web development']
+draft: false
+summary: 'Comprehensive comparison of JavaScript string methods: String.prototype.slice(), String.prototype.substring(), and String.prototype.substr(). Learn the differences between slice(), substring(), and substr(), when to use each method, common pitfalls, and best practices with detailed code examples.'
+authors: ['default']
+images: ['/static/images/slice-vs-substring-vs-substr-complete-javascript-string-methods-comparison.avif']
+layout: PostLayout
+---
+
+![slice() vs substring() vs substr(): Complete JavaScript String Methods Comparison Infographics](/static/images/slice-vs-substring-vs-substr-complete-javascript-string-methods-comparison.avif)
+
+<TOCInline toc={props.toc} asDisclosure={true} />
+
+## Introduction
+
+When working with JavaScript strings, developers often encounter three similar methods for extracting substrings: `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`). While they might seem interchangeable at first glance, each method has distinct behaviors that can lead to unexpected results if not understood properly.
+
+This comprehensive guide will provide an in-depth exploration of each method, covering:
+
+- **Detailed syntax and parameter behavior** for each method
+- **Complete algorithm explanations** showing how each method processes indices
+- **Comprehensive examples** covering all edge cases and boundary conditions
+- **Real-world use cases** with production-ready code examples
+- **Common pitfalls and debugging strategies** to help you avoid mistakes
+- **Performance analysis** and optimization considerations
+- **Type coercion behavior** and how non-number values are handled
+- **Unicode and special character handling** for international strings
+- **Integration patterns** with other JavaScript string methods
+- **Migration strategies** for legacy codebases
+- **Interview preparation** with common questions and answers
+
+By the end of this article, you'll not only understand each method's behavior but also gain the expertise to choose the right method for your specific use case, write more robust code, and debug string manipulation issues effectively.
+
+## Quick Comparison Table
+
+Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`):
+
+| Feature | `slice()` / `String.prototype.slice()` | `substring()` / `String.prototype.substring()` | `substr()` / `String.prototype.substr()` |
+|---------|-----------|---------------|------------|
+| **Syntax** | `slice(start, end)` | `substring(start, end)` | `substr(start, length)` |
+| **Second Parameter** | End index (exclusive) | End index (exclusive) | Length of substring |
+| **Negative Index** | Supported (counts from end) | Not supported (treated as 0) | Supported (start only) |
+| **Swaps Arguments** | No | Yes (if start > end) | No |
+| **Start > End** | Returns empty string | Swaps arguments | Works as expected |
+| **Status** | Recommended ✅ | Supported ⚠️ | Deprecated ❌ |
+
+## Understanding slice() / String.prototype.slice()
+
+The `String.prototype.slice()` method (commonly called `slice()`) extracts a section of a string and returns it as a new string, without modifying the original string. It's the most modern and recommended method for extracting substrings in JavaScript. `slice()` was introduced in ECMAScript 3 and is part of the official JavaScript specification, making it the standard choice for string extraction operations.
+
+### Syntax
+
+```javascript
+string.slice(startIndex, endIndex)
+```
+
+### Parameters
+
+- **startIndex**: The zero-based index at which to begin extraction. Can be negative (counts from end). If negative, it's converted to `string.length + startIndex`. If omitted or undefined, defaults to 0.
+- **endIndex** (optional): The zero-based index **before which** to end extraction (exclusive). Can be negative (counts from end). If negative, it's converted to `string.length + endIndex`. If omitted or undefined, defaults to `string.length`. If `endIndex` is greater than `string.length`, it's clamped to `string.length`.
+
+### Key Features of slice()
+
+1. **Supports Negative Indices**: Negative indices count backwards from the end of the string, making it intuitive to extract from the end
+2. **No Argument Swapping**: If `start > end`, returns an empty string (predictable behavior)
+3. **Consistent Behavior**: Predictable and intuitive behavior across all scenarios
+4. **Similar to Array.slice()**: Works identically to `Array.prototype.slice()`, providing consistency across JavaScript APIs
+5. **Immutable**: Never modifies the original string, always returns a new string
+6. **Clamps Indices**: Automatically handles out-of-bounds indices gracefully
+7. **Exclusive End Index**: The end index is exclusive (not included in the result), which is consistent with many programming languages
+
+### Why slice() is Recommended
+
+`slice()` is the recommended method because:
+
+- **Modern Standard**: Part of ECMAScript specification since ES3
+- **Intuitive**: Behavior matches developer expectations
+- **Consistent**: Works like `Array.slice()`, reducing cognitive load
+- **Flexible**: Supports negative indices for convenient end-of-string operations
+- **Predictable**: No surprising argument swapping or type coercion quirks
+- **Future-proof**: Not deprecated, actively maintained and optimized
+
+### slice() Examples
+
+#### Basic Usage Examples
+
+```javascript
+const str = "JavaScript"; // Length: 10 characters
+// Index:    0123456789
+//           J a v a S c r i p t
+
+// Example 1: Extract from start to end index (exclusive)
+console.log(str.slice(0, 4));      // "Java"
+// Explanation: Start at index 0 ('J'), end before index 4 (so includes indices 0,1,2,3)
+// Result: "Java" (characters at positions 0, 1, 2, 3)
+
+// Example 2: Extract middle portion
+console.log(str.slice(4, 10));     // "Script"
+// Explanation: Start at index 4 ('S'), end before index 10 (end of string)
+// Result: "Script" (characters at positions 4, 5, 6, 7, 8, 9)
+
+// Example 3: Extract from index to end (omitted endIndex)
+console.log(str.slice(4));         // "Script"
+// Explanation: When endIndex is omitted, it defaults to string.length
+// Equivalent to: str.slice(4, str.length)
+// Result: "Script" (from index 4 to end)
+
+// Example 4: Extract single character
+console.log(str.slice(0, 1));      // "J"
+// Explanation: Start at 0, end before 1, so only index 0 is included
+
+// Example 5: Extract with same start and end
+console.log(str.slice(5, 5));      // "" (empty string)
+// Explanation: When start equals end, no characters are included (empty range)
+```
+
+#### Negative Index Examples (Detailed)
+
+```javascript
+const str = "JavaScript"; // Length: 10
+// Positive:   0123456789
+// Negative:  -10987654321
+
+// Example 1: Negative start index only
+console.log(str.slice(-6));        // "Script"
+// Explanation: -6 becomes str.length + (-6) = 10 - 6 = 4
+// Equivalent to: str.slice(4) which gives "Script"
+
+// Example 2: Both indices negative
+console.log(str.slice(-6, -1));    // "Scrip"
+// Explanation:
+//   Start: -6 becomes 10 - 6 = 4
+//   End: -1 becomes 10 - 1 = 9
+// Equivalent to: str.slice(4, 9) which gives "Scrip" (indices 4-8)
+
+// Example 3: Positive start, negative end
+console.log(str.slice(0, -1));     // "JavaScrip"
+// Explanation:
+//   Start: 0
+//   End: -1 becomes 10 - 1 = 9
+// Equivalent to: str.slice(0, 9) which gives "JavaScrip" (all except last char)
+
+// Example 4: Negative start, positive end
+console.log(str.slice(-4, 10));    // "ript"
+// Explanation:
+//   Start: -4 becomes 10 - 4 = 6
+//   End: 10 (clamped to string.length)
+// Result: "ript" (indices 6, 7, 8, 9)
+
+// Example 5: Both negative, extracting middle
+console.log(str.slice(-8, -3));    // "vaScr"
+// Explanation:
+//   Start: -8 becomes 10 - 8 = 2
+//   End: -3 becomes 10 - 3 = 7
+// Equivalent to: str.slice(2, 7) which gives "vaScr"
+```
+
+#### Edge Cases and Boundary Conditions
+
+```javascript
+const str = "JavaScript"; // Length: 10
+
+// Case 1: Empty range (start equals end)
+console.log(str.slice(0, 0));      // "" (empty string)
+console.log(str.slice(5, 5));      // "" (empty string)
+// Explanation: When start >= end, result is always empty string
+
+// Case 2: Start greater than end (no swapping!)
+console.log(str.slice(5, 3));      // "" (empty string)
+console.log(str.slice(10, 0));     // "" (empty string)
+// Explanation: slice() does NOT swap arguments, returns empty string instead
+// This is different from substring() which would swap!
+
+// Case 3: Start beyond string length
+console.log(str.slice(20));        // "" (empty string)
+console.log(str.slice(20, 25));    // "" (empty string)
+// Explanation: Start is clamped to string.length, so start >= end, returns ""
+
+// Case 4: Negative beyond string length
+console.log(str.slice(-20));       // "JavaScript" (entire string)
+// Explanation: -20 becomes Math.max(0, 10 - 20) = Math.max(0, -10) = 0
+// Equivalent to: str.slice(0) which gives entire string
+
+// Case 5: End beyond string length
+console.log(str.slice(0, 100));    // "JavaScript" (entire string)
+// Explanation: End is clamped to string.length (10)
+// Equivalent to: str.slice(0, 10)
+
+// Case 6: Both indices beyond string length
+console.log(str.slice(15, 20));    // "" (empty string)
+// Explanation: Both are clamped to 10, so start(10) >= end(10), returns ""
+
+// Case 7: Negative start, negative end, but start > end after conversion
+console.log(str.slice(-3, -6));    // "" (empty string)
+// Explanation:
+//   Start: -3 becomes 10 - 3 = 7
+//   End: -6 becomes 10 - 6 = 4
+//   Result: str.slice(7, 4) which is empty (7 > 4)
+```
+
+#### Type Coercion Behavior
+
+```javascript
+const str = "JavaScript";
+
+// Example 1: String numbers are converted to numbers
+console.log(str.slice("2", "5"));      // "vaS"
+// Explanation: "2" becomes 2, "5" becomes 5
+// Equivalent to: str.slice(2, 5)
+
+// Example 2: Non-numeric strings become NaN, treated as 0
+console.log(str.slice("abc", 5));      // "JavaS"
+// Explanation: "abc" becomes NaN, which is treated as 0
+// Equivalent to: str.slice(0, 5)
+
+// Example 3: null becomes 0
+console.log(str.slice(null, 5));       // "JavaS"
+// Explanation: null coerces to 0
+
+// Example 4: undefined uses default behavior
+console.log(str.slice(undefined, 5));  // "JavaS"
+// Explanation: undefined for startIndex defaults to 0
+console.log(str.slice(5, undefined));  // "Script"
+// Explanation: undefined for endIndex defaults to string.length
+
+// Example 5: Boolean values
+console.log(str.slice(true, 5));       // "avaS"
+// Explanation: true coerces to 1, false to 0
+
+// Example 6: Floating point numbers are truncated
+console.log(str.slice(2.7, 5.9));      // "vaS"
+// Explanation: 2.7 becomes 2, 5.9 becomes 5 (floored)
+// Equivalent to: str.slice(2, 5)
+```
+
+### slice() with Negative Indices Explained (Visual Guide)
+
+Understanding negative indices is crucial for effective string manipulation. Here's a detailed visual explanation:
+
+```javascript
+const str = "Hello World";
+// String length: 11 characters
+
+// Visual representation with positive indices:
+// Character:  H  e  l  l  o     W  o  r  l  d
+// Index:      0  1  2  3  4  5  6  7  8  9  10
+
+// Visual representation with negative indices:
+// Character:  H   e   l   l   o       W   o   r   l   d
+// Index:    -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1
+
+// Formula: negativeIndex = string.length + negativeValue
+// Example: -5 in "Hello World" (length 11) = 11 + (-5) = 6
+
+console.log(str.slice(-5));        // "World"
+// Step-by-step:
+// 1. Convert -5: 11 + (-5) = 6
+// 2. Start index: 6 (character 'W')
+// 3. End index: 11 (end of string, default)
+// 4. Extract: indices 6, 7, 8, 9, 10 → "World"
+
+console.log(str.slice(-5, -1));    // "Worl"
+// Step-by-step:
+// 1. Convert start -5: 11 + (-5) = 6
+// 2. Convert end -1: 11 + (-1) = 10
+// 3. Extract: indices 6, 7, 8, 9 (exclusive of 10) → "Worl"
+
+console.log(str.slice(0, -6));     // "Hello"
+// Step-by-step:
+// 1. Start index: 0 (character 'H')
+// 2. Convert end -6: 11 + (-6) = 5
+// 3. Extract: indices 0, 1, 2, 3, 4 (exclusive of 5) → "Hello"
+```
+
+### Understanding Unicode and Multi-byte Characters
+
+JavaScript strings are UTF-16 encoded, which means some characters (like emojis, certain Unicode characters) are represented using surrogate pairs (two 16-bit code units). This is important when working with `slice()`, `substring()`, and `substr()`.
+
+```javascript
+// Example 1: Basic ASCII characters (1 code unit each)
+const ascii = "Hello";
+console.log(ascii.slice(0, 2));        // "He" (works as expected)
+
+// Example 2: Emojis (often 2 code units = 1 character)
+const emoji = "Hello 😀 World";
+console.log(emoji.length);              // 13 (not 12! 😀 counts as 2)
+console.log(emoji.slice(0, 7));         // "Hello 😀" (7 code units = 6 chars + emoji)
+
+// Example 3: High Unicode characters (surrogate pairs)
+const unicode = "A\uD83D\uDE00B";      // "A😀B"
+console.log(unicode.length);            // 4 (A=1, 😀=2, B=1)
+console.log(unicode.slice(0, 2));       // "A\uD83D" (split emoji - BAD!)
+console.log(unicode.slice(0, 3));       // "A😀" (correct)
+```
+
+**Important Notes on Unicode:**
+- `slice()`, `substring()`, and `substr()` all work with **code units** (UTF-16), not code points
+- Emojis and some Unicode characters use 2 code units (surrogate pairs)
+- If you need to split by actual characters, consider using `Array.from(str)` or the spread operator `[...str]`
+- For most practical purposes, the standard methods work fine with ASCII and common Unicode text
+
+## Understanding substring() / String.prototype.substring()
+
+The `String.prototype.substring()` method (commonly called `substring()`) returns a part of the string between the start and end indexes, or to the end of the string. Unlike `slice()`, `substring()` has some quirky behaviors that can lead to unexpected results, making it less intuitive for many developers. `substring()` was one of the earliest string methods in JavaScript (since ES1) and has legacy behaviors that were kept for backward compatibility.
+
+### Syntax
+
+```javascript
+string.substring(startIndex, endIndex)
+```
+
+### Parameters
+
+- **startIndex**: The zero-based index at which to begin extraction. If negative, NaN, or undefined, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
+- **endIndex** (optional): The zero-based index before which to end extraction (exclusive). If negative, NaN, or undefined, it's treated as 0. If omitted, defaults to `string.length`. If greater than `string.length`, it's treated as `string.length`.
+
+### Internal Algorithm
+
+The `substring()` method processes indices differently from `slice()`:
+
+1. **Convert startIndex**:
+   - If negative, NaN, or undefined: convert to 0
+   - If greater than `string.length`: convert to `string.length`
+   - Otherwise: use as-is
+
+2. **Convert endIndex**:
+   - If omitted: use `string.length`
+   - If negative, NaN, or undefined: convert to 0
+   - If greater than `string.length`: convert to `string.length`
+   - Otherwise: use as-is
+
+3. **Swap if needed**: If `startIndex > endIndex`, swap the values
+
+4. **Extract substring**: Return characters from `startIndex` (inclusive) to `endIndex` (exclusive)
+
+**Key Difference**: The automatic swapping behavior in step 3 is what makes `substring()` confusing and different from `slice()`.
+
+### Key Features of substring()
+
+1. **No Negative Indices**: All negative values are treated as 0, losing the convenience of counting from the end
+2. **Argument Swapping**: If `start > end`, the arguments are automatically swapped (this is the most confusing aspect)
+3. **Legacy Method**: One of the oldest string methods (ES1), predating `slice()` which was added in ES3
+4. **NaN Handling**: NaN values are treated as 0, which can mask programming errors
+5. **Clamps to String Length**: Values beyond `string.length` are clamped to `string.length` (not 0)
+6. **Immutable**: Like `slice()`, never modifies the original string
+7. **Exclusive End Index**: The end index is exclusive (not included in result)
+
+### Why substring() Can Be Problematic
+
+`substring()` has several behaviors that can lead to bugs:
+
+- **Argument Swapping**: The automatic swapping can hide logic errors
+- **Negative Index Handling**: Treating negatives as 0 loses information about intent
+- **Inconsistent with slice()**: Works differently from the more modern `slice()` method
+- **NaN Coercion**: Silently converts NaN to 0, which can hide bugs
+
+**Recommendation**: Use `slice()` instead of `substring()` in new code to avoid these pitfalls.
+
+### substring() Examples (Comprehensive)
+
+#### Basic Usage (Same as slice() in Simple Cases)
+
+```javascript
+const str = "JavaScript"; // Length: 10
+
+// Example 1: Basic extraction (works same as slice)
+console.log(str.substring(0, 4));      // "Java"
+// Explanation: Start at 0, end before 4 → indices 0,1,2,3 → "Java"
+
+// Example 2: Middle portion
+console.log(str.substring(4, 10));     // "Script"
+// Explanation: Start at 4, end before 10 → indices 4-9 → "Script"
+
+// Example 3: From index to end
+console.log(str.substring(4));         // "Script"
+// Explanation: When endIndex omitted, defaults to string.length
+// Equivalent to: str.substring(4, 10)
+```
+
+#### Argument Swapping Behavior (The Quirky Part!)
+
+This is where `substring()` differs significantly from `slice()`:
+
+```javascript
+const str = "JavaScript";
+
+// Example 1: Arguments automatically swapped
+console.log(str.substring(4, 0));      // "Java"
+// Step-by-step:
+// 1. startIndex = 4, endIndex = 0
+// 2. Check: 4 > 0? YES → SWAP arguments
+// 3. Now: startIndex = 0, endIndex = 4
+// 4. Extract: indices 0-3 → "Java"
+// Equivalent to: str.substring(0, 4)
+
+// Example 2: Larger swap
+console.log(str.substring(10, 4));     // "Script"
+// Step-by-step:
+// 1. startIndex = 10, endIndex = 4
+// 2. Check: 10 > 4? YES → SWAP arguments
+// 3. Now: startIndex = 4, endIndex = 10
+// 4. Extract: indices 4-9 → "Script"
+// Equivalent to: str.substring(4, 10)
+
+// Example 3: Comparison with slice() (doesn't swap!)
+console.log(str.slice(4, 0));          // "" (empty string)
+console.log(str.substring(4, 0));      // "Java" (swapped!)
+// This is why substring() can hide bugs - it "fixes" what might be an error
+
+// Example 4: Edge case - same values (no swap needed)
+console.log(str.substring(5, 5));      // "" (empty string)
+// Step-by-step:
+// 1. startIndex = 5, endIndex = 5
+// 2. Check: 5 > 5? NO → No swap
+// 3. Extract: indices from 5 to 5 (exclusive) → ""
+```
+
+#### Negative Indices (Always Treated as 0)
+
+```javascript
+const str = "JavaScript";
+
+// Example 1: Negative start becomes 0
+console.log(str.substring(-3));        // "JavaScript"
+// Step-by-step:
+// 1. startIndex = -3 → treated as 0
+// 2. endIndex omitted → defaults to 10
+// 3. Extract: indices 0-9 → entire string "JavaScript"
+// Equivalent to: str.substring(0)
+
+// Example 2: Negative end becomes 0, then swaps if needed
+console.log(str.substring(-3, 4));     // "Java"
+// Step-by-step:
+// 1. startIndex = -3 → treated as 0
+// 2. endIndex = 4
+// 3. Check: 0 > 4? NO → No swap
+// 4. Extract: indices 0-3 → "Java"
+// Equivalent to: str.substring(0, 4)
+
+// Example 3: Both negative, then potential swap
+console.log(str.substring(4, -3));     // "Java"
+// Step-by-step:
+// 1. startIndex = 4
+// 2. endIndex = -3 → treated as 0
+// 3. Check: 4 > 0? YES → SWAP arguments
+// 4. Now: startIndex = 0, endIndex = 4
+// 5. Extract: indices 0-3 → "Java"
+// Equivalent to: str.substring(0, 4)
+
+// Example 4: Both negative (both become 0)
+console.log(str.substring(-5, -3));    // "" (empty string)
+// Step-by-step:
+// 1. startIndex = -5 → treated as 0
+// 2. endIndex = -3 → treated as 0
+// 3. Check: 0 > 0? NO → No swap
+// 4. Extract: indices from 0 to 0 (exclusive) → ""
+
+// Comparison with slice() - shows the difference
+console.log(str.slice(-3));            // "ipt" (last 3 characters)
+console.log(str.substring(-3));        // "JavaScript" (entire string!)
+
+console.log(str.slice(-5, -2));        // "Scri" (characters from -5 to -2)
+console.log(str.substring(-5, -2));    // "" (both become 0 → empty)
+```
+
+#### Type Coercion and Special Values
+
+```javascript
+const str = "JavaScript";
+
+// Example 1: NaN treated as 0
+console.log(str.substring(NaN, 4));    // "Java"
+// Explanation: NaN coerces to 0, so becomes substring(0, 4)
+
+// Example 2: null treated as 0
+console.log(str.substring(null, 5));   // "JavaS"
+// Explanation: null coerces to 0
+
+// Example 3: undefined for startIndex
+console.log(str.substring(undefined, 5)); // "JavaS"
+// Explanation: undefined coerces to 0
+
+// Example 4: undefined for endIndex
+console.log(str.substring(5, undefined)); // "Script"
+// Explanation: undefined for endIndex defaults to string.length
+
+// Example 5: String numbers
+console.log(str.substring("2", "6"));   // "vaSc"
+// Explanation: "2" becomes 2, "6" becomes 6
+
+// Example 6: Boolean values
+console.log(str.substring(true, 5));    // "avaS"
+// Explanation: true becomes 1, false becomes 0
+
+// Example 7: Floating point truncation
+console.log(str.substring(2.7, 6.9));   // "vaSc"
+// Explanation: 2.7 becomes 2, 6.9 becomes 6 (Math.floor applied)
+```
+
+#### Edge Cases and Boundary Conditions
+
+```javascript
+const str = "JavaScript"; // Length: 10
+
+// Case 1: Start beyond string length
+console.log(str.substring(15));        // "" (empty string)
+// Explanation: 15 > 10, so clamped to 10
+// Equivalent to: str.substring(10) → "" (from index 10 to end, which is empty)
+
+// Case 2: End beyond string length
+console.log(str.substring(0, 100));    // "JavaScript"
+// Explanation: endIndex 100 > 10, so clamped to 10
+// Equivalent to: str.substring(0, 10) → entire string
+
+// Case 3: Both beyond string length, then swap
+console.log(str.substring(15, 20));    // "" (empty string)
+// Step-by-step:
+// 1. startIndex = 15 → clamped to 10
+// 2. endIndex = 20 → clamped to 10
+// 3. Check: 10 > 10? NO → No swap
+// 4. Extract: indices from 10 to 10 (exclusive) → ""
+
+// Case 4: Negative start, large end
+console.log(str.substring(-5, 100));   // "JavaScript"
+// Step-by-step:
+// 1. startIndex = -5 → treated as 0
+// 2. endIndex = 100 → clamped to 10
+// 3. Extract: indices 0-9 → entire string
+
+// Case 5: Large start, negative end (swap occurs)
+console.log(str.substring(100, -5));   // "JavaScript"
+// Step-by-step:
+// 1. startIndex = 100 → clamped to 10
+// 2. endIndex = -5 → treated as 0
+// 3. Check: 10 > 0? YES → SWAP
+// 4. Now: startIndex = 0, endIndex = 10
+// 5. Extract: entire string
+```
+
+#### Common substring() Pitfalls
+
+```javascript
+// Pitfall 1: Assuming negative indices work like slice()
+function getLastThree(str) {
+  return str.substring(-3);  // WRONG! Returns entire string
+  // Should be: return str.slice(-3);
+}
+console.log(getLastThree("JavaScript")); // "JavaScript" (not "ipt"!)
+
+// Pitfall 2: Relying on argument swapping (hides bugs)
+function extractMiddle(str, start, end) {
+  // BAD: If start > end, substring() swaps, but is that what we want?
+  return str.substring(start, end);  // Might hide a logic error
+
+  // BETTER: Be explicit
+  const actualStart = Math.min(start, end);
+  const actualEnd = Math.max(start, end);
+  return str.slice(actualStart, actualEnd);
+}
+
+// Pitfall 3: NaN silently becoming 0
+function unsafeExtract(str, index) {
+  // WRONG! Both slice() and substring() treat NaN as 0, hiding the error
+  return str.substring(index);  // If index is NaN, returns from position 0!
+}
+console.log(unsafeExtract("Hello", NaN)); // "Hello" (not an error!)
+
+// BETTER: Check for invalid inputs first
+function safeExtract(str, index) {
+  if (isNaN(index)) {
+    throw new Error("Invalid index");
+  }
+  return str.substring(index);
+}
+```
+
+### substring() Quirky Behavior
+
+```javascript
+const str = "Hello World";
+
+// Quirk 1: Argument swapping
+console.log(str.substring(6, 0));      // "Hello " (swaps to substring(0, 6))
+console.log(str.slice(6, 0));          // "" (doesn't swap)
+
+// Quirk 2: Negative indices become 0
+console.log(str.substring(-5));        // "Hello World" (entire string)
+console.log(str.slice(-5));            // "World" (last 5 characters)
+
+// Quirk 3: Combination of negative and swapping
+console.log(str.substring(6, -3));     // "Hello " (becomes substring(0, 6))
+console.log(str.slice(6, -3));         // "Wo" (from 6 to -3, which is position 8)
+```
+
+## Understanding substr() / String.prototype.substr() (Deprecated)
+
+The `String.prototype.substr()` method (commonly called `substr()`) returns a portion of the string, starting at the specified position and extending for a given number of characters. **Important: `substr()` is deprecated and should not be used in new code.**
+
+### Syntax
+
+```javascript
+string.substr(startIndex, length)
+```
+
+### Parameters
+
+- **startIndex**: The index of the first character to include in the returned substring
+- **length** (optional): The number of characters to extract. If omitted, extracts to the end of the string.
+
+### Key Features of substr()
+
+1. **Second Parameter is Length**: Unlike `slice()` and `substring()`, the second parameter is the length, not the end index
+2. **Supports Negative Start**: Negative start index counts from the end
+3. **Deprecated**: Should not be used in new code
+4. **Inconsistent with Other Methods**: Different parameter meaning causes confusion
+
+### substr() Examples
+
+```javascript
+const str = "JavaScript";
+
+// Basic usage (NOTE: second param is LENGTH, not end index!)
+console.log(str.substr(0, 4));         // "Java" (4 characters from index 0)
+console.log(str.substr(4, 6));         // "Script" (6 characters from index 4)
+console.log(str.substr(4));            // "Script" (to end)
+
+// Negative start index
+console.log(str.substr(-6));           // "Script" (last 6 characters)
+console.log(str.substr(-6, 3));        // "Scr" (3 characters starting from -6)
+
+// Edge cases
+console.log(str.substr(0, 0));         // "" (length 0)
+console.log(str.substr(0, 20));        // "JavaScript" (entire string, length capped)
+console.log(str.substr(20));           // "" (start beyond string length)
+
+// Negative start with length
+console.log(str.substr(-4, 2));        // "ip" (2 characters from 4th from end)
+```
+
+### Why substr() is Deprecated
+
+```javascript
+// substr() has been deprecated because:
+// 1. Inconsistent parameter meaning (length vs end index)
+// 2. Confusing for developers coming from slice()/substring()
+// 3. Not part of ECMAScript standard (though widely supported)
+// 4. Can be replaced with slice() in all cases
+
+// Instead of substr(start, length), use:
+const str = "JavaScript";
+
+// substr(4, 6) equivalent:
+console.log(str.substr(4, 6));         // "Script" (old way)
+console.log(str.slice(4, 4 + 6));      // "Script" (recommended)
+
+// substr(-6) equivalent:
+console.log(str.substr(-6));           // "Script" (old way)
+console.log(str.slice(-6));            // "Script" (recommended)
+
+// substr(-6, 3) equivalent:
+console.log(str.substr(-6, 3));        // "Scr" (old way)
+const start = str.length + (-6);       // Calculate start index
+console.log(str.slice(start, start + 3)); // "Scr" (recommended)
+```
+
+## Side-by-Side Comparison
+
+Let's compare all three methods with the same inputs to see how they differ:
+
+```javascript
+const str = "Hello, World!";
+
+console.log("Original string:", str);
+console.log("String length:", str.length);
+
+// Example 1: Basic extraction
+console.log("\n=== Example 1: slice(0, 5) ===");
+console.log("slice(0, 5):", str.slice(0, 5));           // "Hello"
+console.log("substring(0, 5):", str.substring(0, 5));   // "Hello"
+console.log("substr(0, 5):", str.substr(0, 5));         // "Hello" (5 characters)
+
+// Example 2: Negative start
+console.log("\n=== Example 2: Negative start (-6) ===");
+console.log("slice(-6):", str.slice(-6));               // "World!"
+console.log("substring(-6):", str.substring(-6));       // "Hello, World!" (treated as 0)
+console.log("substr(-6):", str.substr(-6));             // "World!"
+
+// Example 3: Start > End
+console.log("\n=== Example 3: Start > End (7, 2) ===");
+console.log("slice(7, 2):", str.slice(7, 2));           // "" (empty)
+console.log("substring(7, 2):", str.substring(7, 2));   // "llo," (swaps to substring(2, 7))
+console.log("substr(7, 2):", str.substr(7, 2));         // "Wo" (7th index, length 2)
+
+// Example 4: Negative end
+console.log("\n=== Example 4: Negative end (0, -6) ===");
+console.log("slice(0, -6):", str.slice(0, -6));         // "Hello,"
+console.log("substring(0, -6):", str.substring(0, -6)); // "" (negative treated as 0, becomes substring(0, 0))
+console.log("substr(0, -6):", str.substr(0, -6));       // "" (negative length treated as 0)
+
+// Example 5: Omitted end parameter
+console.log("\n=== Example 5: Start only (7) ===");
+console.log("slice(7):", str.slice(7));                 // "World!"
+console.log("substring(7):", str.substring(7));         // "World!"
+console.log("substr(7):", str.substr(7));               // "World!"
+```
+
+## Real-World Use Cases
+
+### Use Case 1: Extracting File Extensions
+
+```javascript
+function getFileExtension(filename) {
+  // Using slice() - recommended approach
+  const lastDot = filename.lastIndexOf('.');
+  if (lastDot === -1) return '';
+  return filename.slice(lastDot + 1);
+}
+
+console.log(getFileExtension('document.pdf'));          // "pdf"
+console.log(getFileExtension('image.jpg'));             // "jpg"
+console.log(getFileExtension('archive.tar.gz'));        // "gz"
+console.log(getFileExtension('noextension'));           // ""
+```
+
+### Use Case 2: Truncating Text with Ellipsis
+
+```javascript
+function truncate(text, maxLength) {
+  if (text.length <= maxLength) return text;
+  // Using slice() to get first maxLength characters
+  return text.slice(0, maxLength - 3) + '...';
+}
+
+console.log(truncate('This is a long text', 10));       // "This is..."
+console.log(truncate('Short', 10));                     // "Short"
+```
+
+### Use Case 3: Extracting Domain from URL
+
+```javascript
+function extractDomain(url) {
+  // Remove protocol
+  let domain = url.replace(/^https?:\/\//, '');
+  // Extract domain part (before first slash)
+  const slashIndex = domain.indexOf('/');
+  if (slashIndex !== -1) {
+    domain = domain.slice(0, slashIndex);
+  }
+  return domain;
+}
+
+console.log(extractDomain('https://example.com/path')); // "example.com"
+console.log(extractDomain('http://subdomain.example.com')); // "subdomain.example.com"
+```
+
+### Use Case 4: Getting Last N Characters
+
+```javascript
+function getLastNChars(str, n) {
+  // Using slice() with negative index - clean and readable
+  return str.slice(-n);
+}
+
+console.log(getLastNChars('JavaScript', 4));            // "ript"
+console.log(getLastNChars('Hello World', 5));           // "World"
+
+// Alternative with substring (less intuitive):
+function getLastNCharsSubstring(str, n) {
+  return str.substring(str.length - n);
+}
+```
+
+### Use Case 5: Masking Sensitive Information
+
+```javascript
+function maskEmail(email) {
+  const [localPart, domain] = email.split('@');
+  if (localPart.length <= 2) {
+    return email; // Too short to mask
+  }
+  // Show first 2 and last character, mask the rest
+  const visible = localPart.slice(0, 2) + localPart.slice(-1);
+  const masked = localPart.slice(2, -1).replace(/./g, '*');
+  return visible.slice(0, 2) + masked + visible.slice(-1) + '@' + domain;
+}
+
+console.log(maskEmail('john.doe@example.com'));         // "jo***e@example.com"
+console.log(maskEmail('user@example.com'));             // "us*r@example.com"
+
+// More advanced masking functions
+function maskCreditCard(cardNumber) {
+  // Show only last 4 digits
+  if (cardNumber.length < 4) return cardNumber;
+  const last4 = cardNumber.slice(-4);
+  const masked = '*'.repeat(Math.max(0, cardNumber.length - 4));
+  return masked + last4;
+}
+
+console.log(maskCreditCard('1234567890123456')); // "************3456"
+
+function maskPhoneNumber(phone) {
+  // Show last 4 digits, mask the rest
+  if (phone.length < 4) return phone;
+  const last4 = phone.slice(-4);
+  const masked = phone.slice(0, -4).replace(/\d/g, '*');
+  return masked + last4;
+}
+
+console.log(maskPhoneNumber('555-123-4567')); // "***-***-4567"
+```
+
+### Use Case 6: Parsing and Formatting Dates
+
+```javascript
+// Extracting date components from ISO format
+function parseISODate(isoString) {
+  // Format: "2024-01-15T10:30:00Z"
+  const datePart = isoString.slice(0, 10);        // "2024-01-15"
+  const timePart = isoString.slice(11, 19);       // "10:30:00"
+  const year = datePart.slice(0, 4);              // "2024"
+  const month = datePart.slice(5, 7);             // "01"
+  const day = datePart.slice(8, 10);              // "15"
+
+  return {
+    year: parseInt(year, 10),
+    month: parseInt(month, 10),
+    day: parseInt(day, 10),
+    date: datePart,
+    time: timePart
+  };
+}
+
+console.log(parseISODate('2024-01-15T10:30:00Z'));
+// { year: 2024, month: 1, day: 15, date: '2024-01-15', time: '10:30:00' }
+
+// Formatting dates
+function formatDate(dateString) {
+  // Input: "20240115" → Output: "2024-01-15"
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6);
+  const day = dateString.slice(6, 8);
+  return `${year}-${month}-${day}`;
+}
+```
+
+### Use Case 7: Text Processing and Word Extraction
+
+```javascript
+// Extract first N words from text
+function getFirstWords(text, count) {
+  const words = text.split(/\s+/);
+  if (words.length <= count) return text;
+  return words.slice(0, count).join(' ') + '...';
+}
+
+console.log(getFirstWords('This is a long sentence with many words', 4));
+// "This is a long..."
+
+// Extract last N words
+function getLastWords(text, count) {
+  const words = text.split(/\s+/);
+  if (words.length <= count) return text;
+  return words.slice(-count).join(' ');
+}
+
+console.log(getLastWords('This is a long sentence with many words', 3));
+// "with many words"
+
+// Extract sentences
+function getFirstSentence(text) {
+  const sentenceEnd = text.search(/[.!?]/);
+  if (sentenceEnd === -1) return text;
+  return text.slice(0, sentenceEnd + 1);
+}
+```
+
+### Use Case 8: URL and Path Manipulation
+
+```javascript
+// Extract path segments
+function getPathSegments(url) {
+  const pathStart = url.indexOf('/', url.indexOf('://') + 3);
+  if (pathStart === -1) return [];
+  const path = url.slice(pathStart + 1);
+  return path.split('/').filter(Boolean);
+}
+
+console.log(getPathSegments('https://example.com/users/123/posts'));
+// ["users", "123", "posts"]
+
+// Get parent directory from file path
+function getParentPath(filePath) {
+  const lastSlash = filePath.lastIndexOf('/');
+  if (lastSlash === -1) return '.';
+  return filePath.slice(0, lastSlash) || '/';
+}
+
+console.log(getParentPath('/users/john/documents/file.txt'));
+// "/users/john/documents"
+
+// Extract query parameters
+function getQueryString(url) {
+  const queryStart = url.indexOf('?');
+  if (queryStart === -1) return '';
+  const hashStart = url.indexOf('#');
+  if (hashStart !== -1) {
+    return url.slice(queryStart + 1, hashStart);
+  }
+  return url.slice(queryStart + 1);
+}
+
+console.log(getQueryString('https://example.com/search?q=javascript&page=1'));
+// "q=javascript&page=1"
+
+console.log(getQueryString('https://example.com/search?q=javascript#results'));
+// "q=javascript"
+
+console.log(getQueryString('https://example.com/search'));
+// ""
+```
+
+### Use Case 9: String Validation and Sanitization
+
+```javascript
+// Validate and extract username from email
+function extractUsername(email) {
+  const atIndex = email.indexOf('@');
+  if (atIndex === -1 || atIndex === 0) return null;
+  const username = email.slice(0, atIndex);
+  // Validate username (alphanumeric, dots, underscores)
+  if (!/^[a-zA-Z0-9._]+$/.test(username)) return null;
+  return username;
+}
+
+console.log(extractUsername('john.doe@example.com'));
+// "john.doe"
+
+console.log(extractUsername('user_name123@domain.com'));
+// "user_name123"
+
+console.log(extractUsername('invalid@email'));
+// null
+
+console.log(extractUsername('@example.com'));
+// null
+
+console.log(extractUsername('user@name@example.com'));
+// null
+
+// Remove HTML tags (simple version)
+function stripHTML(html) {
+  let text = html;
+  while (text.includes('<')) {
+    const tagStart = text.indexOf('<');
+    const tagEnd = text.indexOf('>', tagStart);
+    if (tagEnd === -1) break;
+    text = text.slice(0, tagStart) + text.slice(tagEnd + 1);
+  }
+  return text;
+}
+
+console.log(stripHTML('<p>Hello <strong>world</strong>!</p>'));
+// "Hello world!"
+
+console.log(stripHTML('<div>Text with <span>nested</span> tags</div>'));
+// "Text with nested tags"
+
+console.log(stripHTML('Plain text without tags'));
+// "Plain text without tags"
+```
+
+## Common Pitfalls and Mistakes
+
+### Pitfall 1: Confusing substring() with slice()
+
+```javascript
+const str = "Hello World";
+
+// This works as expected
+console.log(str.slice(0, 5));           // "Hello"
+
+// But this behaves differently!
+console.log(str.substring(5, 0));       // "Hello" (swaps to substring(0, 5))
+console.log(str.slice(5, 0));           // "" (empty string)
+
+// Solution: Use slice() consistently to avoid confusion
+```
+
+### Pitfall 2: Using Negative Indices with substring()
+
+```javascript
+const str = "JavaScript";
+
+// This doesn't work as you might expect
+console.log(str.substring(-3));         // "JavaScript" (entire string, not last 3)
+console.log(str.substring(-3, -1));     // "" (both become 0, so substring(0, 0))
+
+// Solution: Use slice() when you need negative indices
+console.log(str.slice(-3));             // "ipt" (last 3 characters)
+console.log(str.slice(-3, -1));         // "ip" (from -3 to -1)
+```
+
+### Pitfall 3: Using substr() with End Index Instead of Length
+
+```javascript
+const str = "JavaScript";
+
+// Wrong: Thinking substr works like slice/substring
+console.log(str.substr(0, 4));          // "Java" (4 characters, not up to index 4)
+console.log(str.slice(0, 4));           // "Java" (up to index 4, exclusive)
+
+// This difference matters!
+console.log(str.substr(4, 6));          // "Script" (6 characters from index 4)
+console.log(str.slice(4, 10));          // "Script" (from index 4 to 10)
+
+// Solution: Remember substr's second param is LENGTH, not end index
+// Better: Use slice() instead of substr()
+```
+
+### Pitfall 4: Not Handling Edge Cases
+
+```javascript
+function extractSubstring(str, start, end) {
+  // BAD: No validation
+  return str.substring(start, end);
+
+  // GOOD: Handle edge cases
+  if (start < 0) start = 0;
+  if (end > str.length) end = str.length;
+  if (start >= end) return '';
+  return str.slice(start, end);
+}
+
+// Or even better: use slice() which handles most edge cases gracefully
+function extractSubstringSafe(str, start, end) {
+  return str.slice(Math.max(0, start), end);
+}
+```
+
+## Performance Considerations
+
+While all three methods have similar performance characteristics, `slice()` is generally preferred because:
+
+1. **Modern Standard**: Part of ECMAScript standard
+2. **Consistent Behavior**: Predictable and intuitive
+3. **Array Compatibility**: Works similarly to `Array.slice()`, reducing cognitive load
+4. **Future-Proof**: Not deprecated, actively maintained
+
+```javascript
+// Performance is similar for all methods
+const str = "a".repeat(1000000);
+
+console.time('slice');
+for (let i = 0; i < 10000; i++) {
+  str.slice(100, 200);
+}
+console.timeEnd('slice');
+
+console.time('substring');
+for (let i = 0; i < 10000; i++) {
+  str.substring(100, 200);
+}
+console.timeEnd('substring');
+
+// In most cases, performance difference is negligible
+// Choose based on functionality, not performance
+```
+
+## Migration Guide: Replacing substr() and substring()
+
+If you have existing code using `substr()` or `substring()`, here's how to migrate to `slice()`:
+
+### Replacing substr()
+
+```javascript
+// OLD: Using substr()
+const result1 = str.substr(start, length);
+
+// NEW: Using slice()
+const result1 = str.slice(start, start + length);
+
+// OLD: Using substr() with negative start
+const result2 = str.substr(-n);
+
+// NEW: Using slice() with negative index
+const result2 = str.slice(-n);
+
+// OLD: Using substr() with negative start and length
+const result3 = str.substr(-6, 3);
+
+// NEW: Using slice() - calculate start index
+const startIndex = str.length + (-6); // or use Math.max(0, str.length - 6)
+const result3 = str.slice(startIndex, startIndex + 3);
+```
+
+### Replacing substring()
+
+```javascript
+// OLD: Using substring() (works the same when start < end)
+const result1 = str.substring(start, end);
+
+// NEW: Using slice() (drop-in replacement)
+const result1 = str.slice(start, end);
+
+// OLD: Using substring() with swapped arguments (common mistake)
+const result2 = str.substring(end, start); // This swaps automatically!
+
+// NEW: Using slice() - be explicit about what you want
+const result2 = str.slice(Math.min(start, end), Math.max(start, end));
+// OR if you really want swapping behavior:
+const result2 = start > end ? str.slice(end, start) : str.slice(start, end);
+```
+
+### Common Interview Questions and Answers
+
+Here are typical interview questions about these methods:
+
+#### Question 1: What's the difference between slice() and substring()?
+
+**Answer:**
+- `slice()` supports negative indices (counts from end), `substring()` treats negatives as 0
+- `slice()` returns empty string if start > end, `substring()` swaps the arguments
+- `slice()` is more modern and recommended, `substring()` is legacy but still supported
+- `slice()` behavior is consistent with `Array.slice()`
+
+#### Question 2: How would you get the last 3 characters of a string?
+
+**Answer:**
+```javascript
+// Method 1: Using slice() with negative index (RECOMMENDED)
+const last3 = str.slice(-3);
+
+// Method 2: Using slice() with calculated index
+const last3 = str.slice(str.length - 3);
+
+// Method 3: Using substring() (less intuitive)
+const last3 = str.substring(str.length - 3);
+
+// Method 4: Using substr() (deprecated, don't use)
+const last3 = str.substr(-3); // DON'T USE
+```
+
+#### Question 3: What happens when you call substring(5, 2)?
+
+**Answer:**
+The arguments are automatically swapped, so `substring(5, 2)` becomes `substring(2, 5)`. This returns the substring from index 2 to index 4 (exclusive of 5).
+
+In contrast, `slice(5, 2)` would return an empty string because `slice()` doesn't swap arguments.
+
+### Working with Template Literals and Dynamic Strings
+
+```javascript
+// Extracting from template literals
+const name = "John Doe";
+const age = 30;
+const template = `Hello, ${name}! You are ${age} years old.`;
+
+// Extract name from template
+const nameStart = template.indexOf(name);
+const extractedName = template.slice(nameStart, nameStart + name.length);
+console.log(extractedName); // "John Doe"
+
+// Extracting dynamic portions
+function extractVariable(template, variable) {
+  const start = template.indexOf(variable);
+  if (start === -1) return null;
+  return template.slice(start, start + variable.length);
+}
+```
+
+### Error Handling and Validation Patterns
+
+```javascript
+// Robust extraction function with validation
+function safeExtract(str, start, end, method = 'slice') {
+  // Input validation
+  if (typeof str !== 'string') {
+    throw new TypeError('First argument must be a string');
+  }
+
+  if (str.length === 0) {
+    return '';
+  }
+
+  // Validate indices
+  const startNum = Number(start);
+  const endNum = end !== undefined ? Number(end) : undefined;
+
+  if (isNaN(startNum)) {
+    throw new TypeError('Start index must be a number');
+  }
+
+  if (end !== undefined && isNaN(endNum)) {
+    throw new TypeError('End index must be a number');
+  }
+
+  // Choose method
+  switch (method) {
+    case 'slice':
+      return str.slice(startNum, endNum);
+    case 'substring':
+      return str.substring(startNum, endNum);
+    default:
+      throw new Error(`Unknown method: ${method}`);
+  }
+}
+
+// Usage with error handling
+try {
+  const result = safeExtract("Hello World", 0, 5, 'slice');
+  console.log(result); // "Hello"
+} catch (error) {
+  console.error('Extraction error:', error.message);
+}
+```
+
+## Browser Compatibility
+
+All three methods are widely supported:
+
+- **slice()**: Supported in all modern browsers (IE4+), part of ECMAScript 3 standard
+- **substring()**: Supported in all modern browsers (IE3+), part of ECMAScript 1 standard
+- **substr()**: Supported but deprecated (IE3+, but should not be used), not part of ECMAScript standard
+
+For modern JavaScript development, `slice()` is the recommended choice as it's part of the ECMAScript standard and has the most intuitive behavior.
+
+## Further Learning Resources
+
+Mastering JavaScript string methods is just one piece of becoming a proficient JavaScript developer. If you're looking to deepen your JavaScript knowledge and build real-world applications, here are some excellent courses that can help you take your skills to the next level:
+
+### Recommended JavaScript Courses
+
+#### Complete JavaScript Course: Build a Real World App from Scratch (Video-Free, Interactive)
+
+**Format: Video-Free | Interactive Text-Based Learning**
+
+For developers who prefer reading and hands-on coding over video tutorials, the [Complete JavaScript Course: Build a Real World App from Scratch](https://www.educative.io/courses/the-complete-javascript-course-build-a-real-world-app-from-scratch?aff=VALz) on Educative is an excellent choice. This **video-free, interactive course** uses Educative's unique text-based learning platform with embedded code editors and immediate feedback.
+
+**What makes this course special:**
+- **No videos, no fluff**: Pure interactive, project-based learning
+- **Learn at your own pace**: Read through lessons and code directly in your browser
+- **Instant feedback**: Get real-time code evaluation and hints
+- **Hands-on practice**: 277 lessons, 23 quizzes, and 32 coding challenges
+
+**Course content:**
+- **JavaScript Fundamentals**: From basics to ES6+ features
+- **DOM Manipulation**: Learn how to traverse and modify web pages dynamically
+- **Event Handling**: Master interactive web development
+- **Real-World Projects**: Build a Social News web application from scratch
+- **Best Practices**: Learn modern JavaScript patterns and techniques
+
+This course is perfect for anyone who wants to go beyond string methods and understand how JavaScript works in real-world applications, especially if you prefer reading and coding over watching videos.
+
+#### Programming with JavaScript (Meta) - Video-Based Course
+
+**Format: Video-Based | Professional Certificate Program**
+
+If you prefer video-based learning and want to learn JavaScript from industry experts, the [Programming with JavaScript](https://imp.i384100.net/YRXbYJ) course by Meta on Coursera offers a structured, professional approach. This **video-based course** is part of Meta's Front-End Developer Professional Certificate and features video lectures, demonstrations, and guided tutorials.
+
+**What makes this course special:**
+- **Video lectures**: Learn from Meta instructors through comprehensive video content
+- **Industry expertise**: Taught by Meta staff with real-world insights
+- **Professional certificate**: Earn a certificate recognized by employers
+- **Structured curriculum**: Follow a clear learning path with assessments
+
+**Course content:**
+- **Core JavaScript Concepts**: Variables, functions, objects, and arrays
+- **Object-Oriented Programming**: Understanding OOP principles in JavaScript
+- **Functional Programming**: Exploring JavaScript's multi-paradigm nature
+- **Testing**: Writing unit tests using Jest
+- **Node.js Fundamentals**: Server-side JavaScript development
+- **Best Practices**: Industry-standard coding practices
+
+This video-based course provides insights into how JavaScript is used at scale in professional environments. It includes hands-on projects and assessments that help you build a portfolio of real JavaScript applications, perfect for visual learners who benefit from watching demonstrations and explanations.
+
+### Why Continue Learning?
+
+Understanding string methods like `slice()`, `substring()`, and `substr()` is important, but JavaScript is a vast language with many powerful features. These courses will help you:
+
+- **Build Complete Applications**: Move beyond individual methods to full-stack development
+- **Understand Modern JavaScript**: Learn ES6+, async/await, modules, and more
+- **Work with Real Projects**: Apply your knowledge to build actual web applications
+- **Follow Industry Standards**: Learn best practices used by professional developers
+- **Prepare for Career Growth**: Gain skills that are in high demand in the job market
+
+Whether you're a beginner looking to start your JavaScript journey or an experienced developer wanting to fill knowledge gaps, these courses provide structured, comprehensive learning paths that complement the detailed knowledge you've gained about string manipulation methods.
+
+## Best Practices
+
+### 1. Prefer slice() Over substring() and substr()
+
+```javascript
+// ✅ GOOD: Use slice() for consistency and modern JavaScript practices
+const username = email.slice(0, email.indexOf('@'));
+const domain = email.slice(email.indexOf('@') + 1);
+
+// ❌ AVOID: Using substring() or substr() in new code
+const usernameOld = email.substring(0, email.indexOf('@'));
+const domainOld = email.substr(email.indexOf('@') + 1);
+```
+
+### 2. Use Negative Indices with slice() for Cleaner Code
+
+```javascript
+// ✅ GOOD: Using negative indices with slice()
+const lastChar = str.slice(-1);              // Last character
+const lastThree = str.slice(-3);             // Last 3 characters
+const allButLast = str.slice(0, -1);         // All except last character
+
+// ❌ AVOID: Calculating indices manually
+const lastCharOld = str[str.length - 1];     // Less readable
+const lastThreeOld = str.substring(str.length - 3); // More verbose
+```
+
+### 3. Always Specify Both Parameters When Clarity Matters
+
+```javascript
+// ✅ GOOD: Explicit parameters for clarity
+const substring = str.slice(startIndex, endIndex);
+
+// ⚠️ ACCEPTABLE: Omitting end parameter when extracting to end
+const rest = str.slice(startIndex);
+```
+
+### 4. Be Aware of Index Boundaries
+
+```javascript
+// ✅ GOOD: Understand that end index is exclusive
+const str = "Hello";
+console.log(str.slice(0, 5));        // "Hello" (indices 0,1,2,3,4)
+console.log(str.slice(0, str.length)); // "Hello" (all characters)
+
+// Remember: end index is NOT inclusive!
+console.log(str.slice(0, 4));        // "Hell" (not "Hello")
+```
+
+### 5. Use Consistent Method Across Your Codebase
+
+```javascript
+// ✅ GOOD: Consistent use of slice() throughout
+function processString(str) {
+  const first = str.slice(0, 5);
+  const middle = str.slice(5, -5);
+  const last = str.slice(-5);
+  return { first, middle, last };
+}
+
+// ❌ AVOID: Mixing different methods inconsistently
+function processStringInconsistent(str) {
+  const first = str.substring(0, 5);    // substring
+  const middle = str.slice(5, -5);      // slice
+  const last = str.substr(-5);          // substr (deprecated!)
+  return { first, middle, last };
+}
+```
+
+## Conclusion
+
+Understanding the differences between `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`) is crucial for writing clean, maintainable JavaScript code. Throughout this comprehensive guide, we've explored the intricate behaviors of each method, their use cases, pitfalls, and best practices.
+
+## Key Takeaways
+
+### Method Comparison Summary
+
+- **`slice()` / `String.prototype.slice()`** ⭐ **RECOMMENDED**:
+  - Supports negative indices (counts from end of string)
+  - Predictable behavior (no argument swapping)
+  - Modern ECMAScript standard (ES3+)
+  - Consistent with `Array.slice()` API
+  - End index is exclusive (not included in result)
+  - Returns empty string when start > end
+  - Part of official JavaScript specification
+
+- **`substring()` / `String.prototype.substring()`** ⚠️ **LEGACY**:
+  - Does NOT support negative indices (treated as 0)
+  - Automatically swaps arguments when start > end (can hide bugs)
+  - Older method (ES1), still supported but less intuitive
+  - NaN values are treated as 0
+  - End index is exclusive (same as slice)
+  - May lead to unexpected results in edge cases
+
+- **`substr()` / `String.prototype.substr()`** ❌ **DEPRECATED**:
+  - Second parameter is LENGTH (not end index) - major difference!
+  - Supports negative start index only
+  - Deprecated and should NOT be used in new code
+  - Not part of ECMAScript standard (though widely supported)
+  - Can be replaced with `slice()` in all cases
+  - Confusing parameter semantics
+
+### Critical Differences to Remember
+
+1. **Parameter Semantics**:
+   - `slice(start, end)`: end is exclusive index
+   - `substring(start, end)`: end is exclusive index (but swaps if start > end)
+   - `substr(start, length)`: second param is LENGTH, not index!
+
+2. **Negative Index Handling**:
+   - `slice()`: Negative indices count from end (intuitive)
+   - `substring()`: Negative indices become 0 (loses information)
+   - `substr()`: Negative start counts from end, but second param is still length
+
+3. **Argument Order Behavior**:
+   - `slice()`: If start > end, returns empty string
+   - `substring()`: If start > end, automatically swaps arguments
+   - `substr()`: Length parameter makes this less relevant
+
+4. **Type Coercion**:
+   - All methods coerce non-number types to numbers
+   - `slice()` and `substring()` handle undefined differently (slice defaults better)
+   - NaN becomes 0 in all methods
+
+### Practical Guidelines
+
+- **Always use `slice()`** for new code and migrations
+- **End index is exclusive**: `slice(0, 5)` includes indices 0,1,2,3,4 (not 5)
+- **Negative indices are powerful**: `slice(-3)` gets last 3 characters elegantly
+- **Consistency matters**: Use `slice()` consistently across your codebase
+- **Unicode awareness**: All methods work with UTF-16 code units (not always code points)
+- **Performance**: Differences are negligible; choose based on functionality
+- **Migration**: Replace `substr()` and `substring()` with `slice()` when refactoring
+
+### Quick Reference Table
+
+| Scenario | `slice()` | `substring()` | `substr()` |
+|----------|-----------|---------------|------------|
+| Get last 3 chars | `str.slice(-3)` ✅ | `str.substring(str.length-3)` ❌ | `str.substr(-3)` ⚠️ |
+| Extract middle | `str.slice(2, 5)` ✅ | `str.substring(2, 5)` ✅ | `str.substr(2, 3)` ⚠️ |
+| Start > End | `""` (empty) ✅ | Swaps args ⚠️ | Works (length based) ⚠️ |
+| Negative start | Works ✅ | Becomes 0 ❌ | Works ✅ |
+| Negative end | Works ✅ | Becomes 0 ❌ | N/A (length param) |
+
+**Legend**: ✅ Recommended | ⚠️ Works but not recommended | ❌ Problematic
+
+### Memory Aid
+
+Think of `slice()` like slicing bread:
+- You specify where to start cutting and where to stop
+- Negative numbers mean "from the end"
+- It's precise and predictable
+
+Think of `substring()` like a helpful but sometimes too-helpful assistant:
+- It tries to fix your mistakes (swaps arguments)
+- But this can hide real bugs
+- It's less predictable
+
+Think of `substr()` as outdated equipment:
+- It uses a different measurement system (length vs index)
+- Still works, but confusing
+- Best to upgrade to modern tools (`slice()`)
+
