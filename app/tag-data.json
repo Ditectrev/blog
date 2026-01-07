@@ -7,13 +7,14 @@
   "performance": 1,
   "programming": 1,
   "rest": 1,
-  "web-development": 2,
+  "web-development": 3,
   "web-services": 1,
+  "frontend": 2,
+  "javascript": 1,
+  "software-development": 3,
+  "css": 1,
   "android": 1,
   "androidx": 1,
   "jetifier": 1,
-  "mobile-development": 1,
-  "software-development": 2,
-  "css": 1,
-  "frontend": 1
+  "mobile-development": 1
 }

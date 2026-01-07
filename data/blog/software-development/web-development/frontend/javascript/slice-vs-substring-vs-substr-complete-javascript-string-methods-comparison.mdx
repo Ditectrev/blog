@@ -288,11 +288,11 @@ const emoji = "Hello 😀 World";
 console.log(emoji.length);              // 13 (not 12! 😀 counts as 2)
 console.log(emoji.slice(0, 7));         // "Hello 😀" (7 code units = 6 chars + emoji)
 
-// Example 3: High Unicode characters (surrogate pairs)
-const unicode = "A\uD83D\uDE00B";      // "A😀B"
-console.log(unicode.length);            // 4 (A=1, 😀=2, B=1)
-console.log(unicode.slice(0, 2));       // "A\uD83D" (split emoji - BAD!)
-console.log(unicode.slice(0, 3));       // "A😀" (correct)
+// Example 3: Splitting surrogate pairs (demonstrating the problem)
+const unicode = "A\u{1D4AF}B";         // Mathematical script T
+console.log(unicode.length);            // 4 (A=1, 𝒯=2, B=1)
+console.log(unicode.slice(0, 2));       // "A" + first half of surrogate pair (split character - BAD!)
+console.log(unicode.slice(0, 3));       // "A𝒯" (correct)
 ```
 
 **Important Notes on Unicode:**
