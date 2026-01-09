@@ -316,27 +316,6 @@ string.substring(startIndex, endIndex)
 - **`startIndex`**: The zero-based index at which to begin extraction. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
 - **`endIndex`** (optional): The zero-based index **before which** to end extraction (exclusive). If omitted, defaults to `string.length`. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
 
-### Internal Algorithm
-
-The `substring()` method processes indices differently from `slice()`:
-
-1. **Convert `startIndex`**:
-   - If negative, NaN, or undefined: convert to 0
-   - If greater than `string.length`: convert to `string.length`
-   - Otherwise: use as-is
-
-2. **Convert `endIndex`**:
-   - If omitted: use `string.length`
-   - If negative, NaN, or undefined: convert to 0
-   - If greater than `string.length`: convert to `string.length`
-   - Otherwise: use as-is
-
-3. **Swap if needed**: If `startIndex > endIndex`, swap the values
-
-4. **Extract substring**: Return characters from `startIndex` (inclusive) to `endIndex` (exclusive)
-
-**Key Difference**: The automatic swapping behavior in step 3 is what makes `substring()` confusing and different from `slice()`.
-
 ### Key Features of substring()
 
 1. **No Negative Indices**: All negative values are treated as 0, losing the convenience of counting from the end
