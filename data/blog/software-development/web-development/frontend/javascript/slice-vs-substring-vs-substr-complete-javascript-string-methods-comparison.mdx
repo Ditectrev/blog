@@ -326,13 +326,13 @@ string.substring(startIndex, endIndex)
 6. **Immutable**: Like `slice()`, never modifies the original string
 7. **Exclusive End Index**: The end index is exclusive (not included in result)
 
-### Why substring() Can Be Problematic
+### Why `substring()` Can Be Problematic
 
 `substring()` has several behaviors that can lead to bugs:
 
 - **Argument Swapping**: The automatic swapping can hide logic errors
 - **Negative Index Handling**: Treating negatives as 0 loses information about intent
-- **Inconsistent with slice()**: Works differently from the more modern `slice()` method
+- **Inconsistent with `slice()`**: Works differently from the more modern `slice()` method
 - **NaN Coercion**: Silently converts NaN to 0, which can hide bugs
 
 **Recommendation**: Use `slice()` instead of `substring()` in new code to avoid these pitfalls.
