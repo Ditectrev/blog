@@ -46,7 +46,7 @@ Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `S
 | **Start > End** | Returns empty string | Swaps arguments | Works as expected |
 | **Status** | Recommended ✅ | Supported ⚠️ | Deprecated ❌ |
 
-## Understanding slice() / String.prototype.slice()
+## Understanding `slice()` / `String.prototype.slice()`
 
 The `String.prototype.slice()` method (commonly called `slice()`) extracts a section of a string and returns it as a new string, without modifying the original string. It's the most modern and recommended method for extracting substrings in JavaScript. `slice()` was introduced in ECMAScript 3 and is part of the official JavaScript specification, making it the standard choice for string extraction operations.
 
@@ -58,20 +58,20 @@ string.slice(startIndex, endIndex)
 
 ### Parameters
 
-- **startIndex**: The zero-based index at which to begin extraction. Can be negative (counts from end). If negative, it's converted to `string.length + startIndex`. If omitted or undefined, defaults to 0.
-- **endIndex** (optional): The zero-based index **before which** to end extraction (exclusive). Can be negative (counts from end). If negative, it's converted to `string.length + endIndex`. If omitted or undefined, defaults to `string.length`. If `endIndex` is greater than `string.length`, it's clamped to `string.length`.
+- **`startIndex`**: The zero-based index at which to begin extraction. Can be negative (counts from end). If negative, it's converted to `string.length + startIndex`. If undefined, defaults to 0. If greater than `string.length`, it's clamped to `string.length`.
+- **`endIndex`** (optional): The zero-based index **before which** to end extraction (exclusive). Can be negative (counts from end). If negative, it's converted to `string.length + endIndex`. If omitted or undefined, defaults to `string.length`. If greater than `string.length`, it's clamped to `string.length`.
 
-### Key Features of slice()
+### Key Features of `slice()`
 
 1. **Supports Negative Indices**: Negative indices count backwards from the end of the string, making it intuitive to extract from the end
 2. **No Argument Swapping**: If `start > end`, returns an empty string (predictable behavior)
 3. **Consistent Behavior**: Predictable and intuitive behavior across all scenarios
-4. **Similar to Array.slice()**: Works identically to `Array.prototype.slice()`, providing consistency across JavaScript APIs
+4. **Similar to `Array.slice()`**: Works identically to `Array.prototype.slice()`, providing consistency across JavaScript APIs
 5. **Immutable**: Never modifies the original string, always returns a new string
 6. **Clamps Indices**: Automatically handles out-of-bounds indices gracefully
 7. **Exclusive End Index**: The end index is exclusive (not included in the result), which is consistent with many programming languages
 
-### Why slice() is Recommended
+### Why `slice()` is Recommended
 
 `slice()` is the recommended method because:
 
@@ -82,7 +82,7 @@ string.slice(startIndex, endIndex)
 - **Predictable**: No surprising argument swapping or type coercion quirks
 - **Future-proof**: Not deprecated, actively maintained and optimized
 
-### slice() Examples
+### `slice()` Examples
 
 #### Basic Usage Examples
 
@@ -235,43 +235,43 @@ console.log(str.slice(2.7, 5.9));      // "vaS"
 // Equivalent to: str.slice(2, 5)
 ```
 
-### slice() with Negative Indices Explained (Visual Guide)
+### `slice()` with Negative Indices Explained (Visual Guide)
 
 Understanding negative indices is crucial for effective string manipulation. Here's a detailed visual explanation:
 
 ```javascript
-const str = "Hello World";
-// String length: 11 characters
+const str = "JavaScript";
+// String length: 10 characters
 
 // Visual representation with positive indices:
-// Character:  H  e  l  l  o     W  o  r  l  d
-// Index:      0  1  2  3  4  5  6  7  8  9  10
+// Character:  J  a  v  a  S  c  r  i  p  t
+// Index:      0  1  2  3  4  5  6  7  8  9
 
 // Visual representation with negative indices:
-// Character:  H   e   l   l   o       W   o   r   l   d
-// Index:    -11 -10  -9  -8  -7  -6  -5  -4  -3  -2  -1
+// Character:  J   a   v   a   S   c   r   i   p   t
+// Index:    -10  -9  -8  -7  -6  -5  -4  -3  -2  -1
 
 // Formula: negativeIndex = string.length + negativeValue
-// Example: -5 in "Hello World" (length 11) = 11 + (-5) = 6
+// Example: -5 in "JavaScript" (length 10) = 10 + (-5) = 5
 
-console.log(str.slice(-5));        // "World"
+console.log(str.slice(-6));        // "Script"
 // Step-by-step:
-// 1. Convert -5: 11 + (-5) = 6
-// 2. Start index: 6 (character 'W')
-// 3. End index: 11 (end of string, default)
-// 4. Extract: indices 6, 7, 8, 9, 10 → "World"
+// 1. Convert -6: 10 + (-6) = 4
+// 2. Start index: 4 (character 'S')
+// 3. End index: 10 (end of string, default)
+// 4. Extract: indices 4, 5, 6, 7, 8, 9 → "Script"
 
-console.log(str.slice(-5, -1));    // "Worl"
+console.log(str.slice(-6, -1));    // "Scrip"
 // Step-by-step:
-// 1. Convert start -5: 11 + (-5) = 6
-// 2. Convert end -1: 11 + (-1) = 10
-// 3. Extract: indices 6, 7, 8, 9 (exclusive of 10) → "Worl"
+// 1. Convert start -6: 10 + (-6) = 4
+// 2. Convert end -1: 10 + (-1) = 9
+// 3. Extract: indices 4, 5, 6, 7, 8 (exclusive of 9) → "Scrip"
 
-console.log(str.slice(0, -6));     // "Hello"
+console.log(str.slice(0, -6));     // "Java"
 // Step-by-step:
-// 1. Start index: 0 (character 'H')
-// 2. Convert end -6: 11 + (-6) = 5
-// 3. Extract: indices 0, 1, 2, 3, 4 (exclusive of 5) → "Hello"
+// 1. Start index: 0 (character 'J')
+// 2. Convert end -6: 10 + (-6) = 4
+// 3. Extract: indices 0, 1, 2, 3 (exclusive of 4) → "Java"
 ```
 
 ### Understanding Unicode and Multi-byte Characters
@@ -285,8 +285,8 @@ console.log(ascii.slice(0, 2));        // "He" (works as expected)
 
 // Example 2: Emojis (often 2 code units = 1 character)
 const emoji = "Hello 😀 World";
-console.log(emoji.length);              // 13 (not 12! 😀 counts as 2)
-console.log(emoji.slice(0, 7));         // "Hello 😀" (7 code units = 6 chars + emoji)
+console.log(emoji.length);              // 14 (not 12! 😀 counts as 2, and there are 2 spaces)
+console.log(emoji.slice(0, 8));         // "Hello 😀" (8 code units = 6 chars + emoji)
 
 // Example 3: Splitting surrogate pairs (demonstrating the problem)
 const unicode = "A\u{1D4AF}B";         // Mathematical script T
@@ -301,7 +301,7 @@ console.log(unicode.slice(0, 3));       // "A𝒯" (correct)
 - If you need to split by actual characters, consider using `Array.from(str)` or the spread operator `[...str]`
 - For most practical purposes, the standard methods work fine with ASCII and common Unicode text
 
-## Understanding substring() / String.prototype.substring()
+## Understanding `substring()` / `String.prototype.substring()`
 
 The `String.prototype.substring()` method (commonly called `substring()`) returns a part of the string between the start and end indexes, or to the end of the string. Unlike `slice()`, `substring()` has some quirky behaviors that can lead to unexpected results, making it less intuitive for many developers. `substring()` was one of the earliest string methods in JavaScript (since ES1) and has legacy behaviors that were kept for backward compatibility.
 
@@ -313,19 +313,19 @@ string.substring(startIndex, endIndex)
 
 ### Parameters
 
-- **startIndex**: The zero-based index at which to begin extraction. If negative, NaN, or undefined, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
-- **endIndex** (optional): The zero-based index before which to end extraction (exclusive). If negative, NaN, or undefined, it's treated as 0. If omitted, defaults to `string.length`. If greater than `string.length`, it's treated as `string.length`.
+- **`startIndex`**: The zero-based index at which to begin extraction. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
+- **`endIndex`** (optional): The zero-based index **before which** to end extraction (exclusive). If omitted, defaults to `string.length`. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
 
 ### Internal Algorithm
 
 The `substring()` method processes indices differently from `slice()`:
 
-1. **Convert startIndex**:
+1. **Convert `startIndex`**:
    - If negative, NaN, or undefined: convert to 0
    - If greater than `string.length`: convert to `string.length`
    - Otherwise: use as-is
 
-2. **Convert endIndex**:
+2. **Convert `endIndex`**:
    - If omitted: use `string.length`
    - If negative, NaN, or undefined: convert to 0
    - If greater than `string.length`: convert to `string.length`
