@@ -67,8 +67,8 @@ string.slice(startIndex, endIndex)
 2. **No Argument Swapping**: If `start > end`, returns an empty string (predictable behavior)
 3. **Consistent Behavior**: Predictable and intuitive behavior across all scenarios
 4. **Similar to `Array.slice()`**: Works identically to `Array.prototype.slice()`, providing consistency across JavaScript APIs
-5. **Immutable**: Never modifies the original string, always returns a new string
-6. **Clamps Indices**: Automatically handles out-of-bounds indices gracefully
+5. **Clamps Indices**: Automatically handles out-of-bounds indices gracefully
+6. **Immutable**: Never modifies the original string, always returns a new string
 7. **Exclusive End Index**: The end index is exclusive (not included in the result), which is consistent with many programming languages
 
 ### Why `slice()` is Recommended
@@ -316,7 +316,7 @@ string.substring(startIndex, endIndex)
 - **`startIndex`**: The zero-based index at which to begin extraction. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
 - **`endIndex`** (optional): The zero-based index **before which** to end extraction (exclusive). If omitted, defaults to `string.length`. If undefined, negative, or NaN, it's treated as 0. If greater than `string.length`, it's treated as `string.length`.
 
-### Key Features of substring()
+### Key Features of `substring()`
 
 1. **No Negative Indices**: All negative values are treated as 0, losing the convenience of counting from the end
 2. **Argument Swapping**: If `start > end`, the arguments are automatically swapped (this is the most confusing aspect)
