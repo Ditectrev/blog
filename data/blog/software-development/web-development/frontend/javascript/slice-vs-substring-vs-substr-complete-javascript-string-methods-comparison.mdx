@@ -624,16 +624,6 @@ console.log(str.substring(4, 0));      // "Java"
 // Comparison with slice() (doesn't swap!):
 console.log(str.slice(4, 0));          // "" (empty string)
 // This is why substring() can hide bugs - it "fixes" what might be an error
-
-// Example 2: Edge case - same values (no swap needed)
-console.log(str.substring(5, 5));      // "" (empty string)
-// Step-by-step:
-// 1. startIndex = 5, endIndex = 5
-// 2. Check: 5 > 5? NO → No swap
-// 3. Extract: indices from 5 to 5 (exclusive) → ""
-// Comparison with slice():
-console.log(str.slice(5, 5));          // "" (empty string)
-// slice() behaves the same - when start equals end, returns empty string
 ```
 
 #### Common `substring()` Pitfalls
