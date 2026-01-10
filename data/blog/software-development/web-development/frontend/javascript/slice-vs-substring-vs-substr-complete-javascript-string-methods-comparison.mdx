@@ -249,6 +249,11 @@ console.log(str.slice(0, -1));     // "JavaScrip" (all except last character)
 //   Start: 0
 //   End: -1 becomes 10 - 1 = 9
 //   Result: str.slice(0, 9) which gives "JavaScrip" (indices 0-8)
+console.log(str.slice(4, -3));    // "Scri" (from index 4 to -3, which is position 7)
+// Explanation:
+//   Start: 4
+//   End: -3 becomes 10 - 3 = 7
+//   Result: str.slice(4, 7) which gives "Scri" (indices 4-6)
 
 // Case 10: Negative start, positive end
 console.log(str.slice(-4, 10));    // "ript" (last 4 characters)
@@ -641,6 +646,18 @@ console.log(str.substring(0, -1));     // "" (empty string)
 console.log(str.slice(0, -1));          // "JavaScrip" (from index 0 to -1, which is position 9)
 // slice() correctly interprets negative end, substring() treats negative end as 0
 
+console.log(str.substring(4, -3));     // "Java"
+// Step-by-step:
+// 1. startIndex = 4
+// 2. endIndex = -3 → treated as 0
+// 3. Check: 4 > 0? YES → SWAP arguments
+// 4. Now: startIndex = 0, endIndex = 4
+// 5. Extract: indices 0-3 → "Java"
+// Equivalent to: str.substring(0, 4)
+// Comparison with slice():
+console.log(str.slice(4, -3));          // "Scri" (from index 4 to -3, which is position 7)
+// slice() correctly interprets negative end (7), substring() treats negative end as 0 and swaps
+
 // Case 10: Negative start, positive end
 console.log(str.substring(-4, 10));     // "JavaScript" (entire string)
 // Step-by-step:
@@ -691,23 +708,6 @@ function safeExtract(str, index) {
 }
 ```
 
-### substring() Quirky Behavior
-
-```javascript
-const str = "Hello World";
-
-// Quirk 1: Argument swapping
-console.log(str.substring(6, 0));      // "Hello " (swaps to substring(0, 6))
-console.log(str.slice(6, 0));          // "" (doesn't swap)
-
-// Quirk 2: Negative indices become 0
-console.log(str.substring(-5));        // "Hello World" (entire string)
-console.log(str.slice(-5));            // "World" (last 5 characters)
-
-// Quirk 3: Combination of negative and swapping
-console.log(str.substring(6, -3));     // "Hello " (becomes substring(0, 6))
-console.log(str.slice(6, -3));         // "Wo" (from 6 to -3, which is position 8)
-```
 
 ## Understanding substr() / String.prototype.substr() (Deprecated)
 
