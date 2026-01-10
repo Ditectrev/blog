@@ -208,31 +208,54 @@ console.log(str.slice(10, 0));     // "" (empty string)
 // Explanation: slice() does NOT swap arguments, returns empty string instead
 // This is different from substring() which would swap!
 
-// Case 3: Start beyond string length
+// Case 3: Start beyond string length (end omitted)
 console.log(str.slice(20));        // "" (empty string)
-console.log(str.slice(20, 25));    // "" (empty string)
-// Explanation: Start is clamped to string.length, so start >= end, returns ""
+// Explanation: Start (20) > string.length (10), so clamped to 10
+// Since end is omitted, it defaults to 10
+// Result: str.slice(10, 10) → "" (empty string)
 
-// Case 4: Negative beyond string length
+// Case 4: Start beyond string length, end within range
+console.log(str.slice(20, 5));     // "" (empty string)
+// Explanation: Start (20) > string.length (10), so clamped to 10
+// End is 5 (within range)
+// Result: str.slice(10, 5) → "" (empty string, because 10 > 5)
+
+// Case 5: Negative beyond string length
 console.log(str.slice(-20));       // "JavaScript" (entire string)
 // Explanation: -20 becomes Math.max(0, 10 - 20) = Math.max(0, -10) = 0
 // Equivalent to: str.slice(0) which gives entire string
 
-// Case 5: End beyond string length
+// Case 6: End beyond string length
 console.log(str.slice(0, 100));    // "JavaScript" (entire string)
 // Explanation: End is clamped to string.length (10)
 // Equivalent to: str.slice(0, 10)
 
-// Case 6: Both indices beyond string length
+// Case 7: Both indices beyond string length
 console.log(str.slice(15, 20));    // "" (empty string)
-// Explanation: Both are clamped to 10, so start(10) >= end(10), returns ""
+console.log(str.slice(20, 25));    // "" (empty string)
+// Explanation: Both indices are beyond string.length (10)
+// Both are clamped to 10, so start(10) >= end(10), returns ""
 
-// Case 7: Negative start, negative end, but start > end after conversion
+// Case 8: Negative start, negative end, but start > end after conversion
 console.log(str.slice(-3, -6));    // "" (empty string)
 // Explanation:
 //   Start: -3 becomes 10 - 3 = 7
 //   End: -6 becomes 10 - 6 = 4
 //   Result: str.slice(7, 4) which is empty (7 > 4)
+
+// Case 9: Positive start, negative end
+console.log(str.slice(0, -1));     // "JavaScrip" (all except last character)
+// Explanation:
+//   Start: 0
+//   End: -1 becomes 10 - 1 = 9
+//   Result: str.slice(0, 9) which gives "JavaScrip" (indices 0-8)
+
+// Case 10: Negative start, positive end
+console.log(str.slice(-4, 10));    // "ript" (last 4 characters)
+// Explanation:
+//   Start: -4 becomes 10 - 4 = 6
+//   End: 10 (clamped to string.length)
+//   Result: "ript" (indices 6, 7, 8, 9)
 ```
 
 ### `slice()` with Negative Indices Explained (Visual Guide)
@@ -506,39 +529,129 @@ console.log(str.slice(2.7, 5.9));          // "vaS" (same result)
 ```javascript
 const str = "JavaScript"; // Length: 10
 
-// Case 1: Start beyond string length
-console.log(str.substring(15));        // "" (empty string)
-// Explanation: 15 > 10, so clamped to 10
-// Equivalent to: str.substring(10) → "" (from index 10 to end, which is empty)
+// Case 1: Empty range (start equals end)
+console.log(str.substring(0, 0));      // "" (empty string)
+console.log(str.substring(5, 5));      // "" (empty string)
+// Explanation: When start equals end, result is always empty string
+// Comparison with slice():
+console.log(str.slice(0, 0));           // "" (same result)
+console.log(str.slice(5, 5));           // "" (same result)
+// Both methods behave the same when start equals end
 
-// Case 2: End beyond string length
-console.log(str.substring(0, 100));    // "JavaScript"
+// Case 2: Start greater than end (swapping occurs!)
+console.log(str.substring(5, 3));      // "vaS"
+// Step-by-step:
+// 1. startIndex = 5, endIndex = 3
+// 2. Check: 5 > 3? YES → SWAP arguments
+// 3. Now: startIndex = 3, endIndex = 5
+// 4. Extract: indices 3-4 → "vaS"
+console.log(str.substring(10, 0));     // "JavaScript"
+// Step-by-step:
+// 1. startIndex = 10 (clamped to 10), endIndex = 0
+// 2. Check: 10 > 0? YES → SWAP arguments
+// 3. Now: startIndex = 0, endIndex = 10
+// 4. Extract: entire string "JavaScript"
+// Comparison with slice():
+console.log(str.slice(5, 3));           // "" (empty string, no swapping)
+console.log(str.slice(10, 0));          // "" (empty string, no swapping)
+// slice() does NOT swap arguments, substring() DOES swap!
+
+// Case 3: Start beyond string length (end omitted)
+console.log(str.substring(20));        // "" (empty string)
+// Explanation: 20 > 10, so clamped to 10
+// For substring(20): startIndex=10, endIndex omitted → defaults to 10
+// Result: str.substring(10, 10) → "" (empty string)
+// Comparison with slice():
+console.log(str.slice(20));             // "" (same result)
+// Both behave the same when start is beyond string length and end is omitted
+
+// Case 4: Start beyond string length, end within range
+console.log(str.substring(20, 5));     // "Script"
+// Step-by-step:
+// 1. startIndex = 20 → clamped to 10
+// 2. endIndex = 5
+// 3. Check: 10 > 5? YES → SWAP arguments
+// 4. Now: startIndex = 5, endIndex = 10
+// 5. Extract: indices 5-9 → "Script"
+// Equivalent to: str.substring(5, 10)
+// Comparison with slice():
+console.log(str.slice(20, 5));          // "" (empty string, no swapping)
+// slice() does NOT swap, so returns "" when clamped start(10) > end(5)
+// substring() SWAPS, so extracts from the valid range!
+
+// Case 5: Negative beyond string length
+console.log(str.substring(-20));       // "JavaScript" (entire string)
+// Explanation: -20 is treated as 0
+// Equivalent to: str.substring(0) which gives entire string
+// Comparison with slice():
+console.log(str.slice(-20));            // "JavaScript" (entire string)
+// Both methods treat very negative indices as 0, giving entire string
+
+// Case 6: End beyond string length
+console.log(str.substring(0, 100));    // "JavaScript" (entire string)
 // Explanation: endIndex 100 > 10, so clamped to 10
 // Equivalent to: str.substring(0, 10) → entire string
+// Comparison with slice():
+console.log(str.slice(0, 100));         // "JavaScript" (same result)
+// Both methods clamp end to string.length
 
-// Case 3: Both beyond string length, then swap
+// Case 7: Both indices beyond string length
 console.log(str.substring(15, 20));    // "" (empty string)
-// Step-by-step:
+console.log(str.substring(20, 25));    // "" (empty string)
+// Step-by-step for substring(15, 20):
 // 1. startIndex = 15 → clamped to 10
 // 2. endIndex = 20 → clamped to 10
 // 3. Check: 10 > 10? NO → No swap
 // 4. Extract: indices from 10 to 10 (exclusive) → ""
+// Step-by-step for substring(20, 25):
+// 1. startIndex = 20 → clamped to 10
+// 2. endIndex = 25 → clamped to 10
+// 3. Check: 10 > 10? NO → No swap
+// 4. Extract: indices from 10 to 10 (exclusive) → ""
+// Comparison with slice():
+console.log(str.slice(15, 20));         // "" (same result)
+console.log(str.slice(20, 25));         // "" (same result)
+// Both methods behave the same when both indices are beyond string length
 
-// Case 4: Negative start, large end
-console.log(str.substring(-5, 100));   // "JavaScript"
+// Case 8: Negative start, negative end, but start > end after conversion
+console.log(str.substring(-3, -6));    // "" (empty string)
 // Step-by-step:
-// 1. startIndex = -5 → treated as 0
-// 2. endIndex = 100 → clamped to 10
-// 3. Extract: indices 0-9 → entire string
+// 1. startIndex = -3 → treated as 0
+// 2. endIndex = -6 → treated as 0
+// 3. Check: 0 > 0? NO → No swap
+// 4. Extract: indices from 0 to 0 (exclusive) → ""
+// Comparison with slice():
+console.log(str.slice(-3, -6));         // "" (empty string)
+// Explanation for slice():
+//   Start: -3 becomes 10 - 3 = 7
+//   End: -6 becomes 10 - 6 = 4
+//   Result: str.slice(7, 4) which is empty (7 > 4)
+// Both return empty, but for different reasons:
+// substring() treats both negatives as 0, slice() converts them and finds 7 > 4
 
-// Case 5: Large start, negative end (swap occurs)
-console.log(str.substring(100, -5));   // "JavaScript"
+// Case 9: Positive start, negative end
+console.log(str.substring(0, -1));     // "" (empty string)
 // Step-by-step:
-// 1. startIndex = 100 → clamped to 10
-// 2. endIndex = -5 → treated as 0
-// 3. Check: 10 > 0? YES → SWAP
-// 4. Now: startIndex = 0, endIndex = 10
-// 5. Extract: entire string
+// 1. startIndex = 0
+// 2. endIndex = -1 → treated as 0
+// 3. Check: 0 > 0? NO → No swap
+// 4. Extract: indices from 0 to 0 (exclusive) → ""
+// Equivalent to: str.substring(0, 0)
+// Comparison with slice():
+console.log(str.slice(0, -1));          // "JavaScrip" (from index 0 to -1, which is position 9)
+// slice() correctly interprets negative end, substring() treats negative end as 0
+
+// Case 10: Negative start, positive end
+console.log(str.substring(-4, 10));     // "JavaScript" (entire string)
+// Step-by-step:
+// 1. startIndex = -4 → treated as 0
+// 2. endIndex = 10
+// 3. Check: 0 > 10? NO → No swap
+// 4. Extract: indices 0-9 → entire string "JavaScript"
+// Equivalent to: str.substring(0, 10)
+// Comparison with slice():
+console.log(str.slice(-4, 10));         // "ript" (from index -4 which is position 6, to 10)
+// slice() correctly interprets negative start (6), substring() treats negative start as 0
 ```
 
 #### Common substring() Pitfalls
