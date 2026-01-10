@@ -395,7 +395,7 @@ const str = "JavaScript"; // Length: 10
 // Positive:   0123456789
 // Negative:  -10987654321
 
-// Example 1: Negative start index only (same indices as slice() above)
+// Example 1: Negative start index only
 console.log(str.substring(-6));        // "JavaScript"
 // Step-by-step:
 // 1. startIndex = -6 → treated as 0
@@ -406,7 +406,7 @@ console.log(str.substring(-6));        // "JavaScript"
 console.log(str.slice(-6));            // "Script" (from index -6, which is position 4)
 // slice() uses negative index as offset from end, substring() treats it as 0
 
-// Example 2: Both indices negative (same indices as slice() above)
+// Example 2: Both indices negative
 console.log(str.substring(-6, -1));    // "" (empty string)
 // Step-by-step:
 // 1. startIndex = -6 → treated as 0
@@ -417,7 +417,7 @@ console.log(str.substring(-6, -1));    // "" (empty string)
 console.log(str.slice(-6, -1));        // "Scrip" (characters from -6 to -1, which is indices 4-8)
 // slice() correctly interprets both negative indices, substring() treats both as 0
 
-// Example 3: Positive start, negative end (same indices as slice() above)
+// Example 3: Positive start, negative end
 console.log(str.substring(0, -1));     // "" (empty string)
 // Step-by-step:
 // 1. startIndex = 0
@@ -429,7 +429,7 @@ console.log(str.substring(0, -1));     // "" (empty string)
 console.log(str.slice(0, -1));         // "JavaScrip" (from index 0 to -1, which is position 9)
 // slice() correctly interprets negative end, substring() treats negative end as 0
 
-// Example 4: Negative start, positive end (same indices as slice() above)
+// Example 4: Negative start, positive end
 console.log(str.substring(-4, 10));     // "JavaScript"
 // Step-by-step:
 // 1. startIndex = -4 → treated as 0
@@ -441,7 +441,7 @@ console.log(str.substring(-4, 10));     // "JavaScript"
 console.log(str.slice(-4, 10));         // "ript" (from index -4 which is position 6, to 10)
 // slice() correctly interprets negative start (6), substring() treats negative start as 0
 
-// Example 5: Both negative, extracting middle (same indices as slice() above)
+// Example 5: Both negative, extracting middle
 console.log(str.substring(-8, -3));    // "" (empty string)
 // Step-by-step:
 // 1. startIndex = -8 → treated as 0
@@ -458,33 +458,47 @@ console.log(str.slice(-8, -3));        // "vaScr" (from -8 to -3, which is indic
 ```javascript
 const str = "JavaScript";
 
-// Example 1: NaN treated as 0
-console.log(str.substring(NaN, 4));    // "Java"
-// Explanation: NaN coerces to 0, so becomes substring(0, 4)
+// Example 1: String numbers are converted to numbers
+console.log(str.substring("2", "5"));      // "vaS"
+// Explanation: "2" becomes 2, "5" becomes 5
+// Equivalent to: str.substring(2, 5)
+// Comparison with slice():
+console.log(str.slice("2", "5"));          // "vaS" (same result)
 
-// Example 2: null treated as 0
-console.log(str.substring(null, 5));   // "JavaS"
+// Example 2: Non-numeric strings become NaN, treated as 0
+console.log(str.substring("abc", 5));      // "JavaS"
+// Explanation: "abc" becomes NaN, which is treated as 0
+// Equivalent to: str.substring(0, 5)
+// Comparison with slice():
+console.log(str.slice("abc", 5));          // "JavaS" (same result)
+
+// Example 3: null becomes 0
+console.log(str.substring(null, 5));       // "JavaS"
 // Explanation: null coerces to 0
+// Comparison with slice():
+console.log(str.slice(null, 5));           // "JavaS" (same result)
 
-// Example 3: undefined for startIndex
-console.log(str.substring(undefined, 5)); // "JavaS"
-// Explanation: undefined coerces to 0
-
-// Example 4: undefined for endIndex
-console.log(str.substring(5, undefined)); // "Script"
+// Example 4: undefined uses default behavior
+console.log(str.substring(undefined, 5));  // "JavaS"
+// Explanation: undefined for startIndex coerces to 0
+console.log(str.substring(5, undefined));  // "Script"
 // Explanation: undefined for endIndex defaults to string.length
+// Comparison with slice():
+console.log(str.slice(undefined, 5));      // "JavaS" (same result)
+console.log(str.slice(5, undefined));      // "Script" (same result)
 
-// Example 5: String numbers
-console.log(str.substring("2", "6"));   // "vaSc"
-// Explanation: "2" becomes 2, "6" becomes 6
+// Example 5: Boolean values
+console.log(str.substring(true, 5));       // "avaS"
+// Explanation: true coerces to 1, false becomes 0
+// Comparison with slice():
+console.log(str.slice(true, 5));           // "avaS" (same result)
 
-// Example 6: Boolean values
-console.log(str.substring(true, 5));    // "avaS"
-// Explanation: true becomes 1, false becomes 0
-
-// Example 7: Floating point truncation
-console.log(str.substring(2.7, 6.9));   // "vaSc"
-// Explanation: 2.7 becomes 2, 6.9 becomes 6 (Math.floor applied)
+// Example 6: Floating point numbers are truncated
+console.log(str.substring(2.7, 5.9));      // "vaS"
+// Explanation: 2.7 becomes 2, 5.9 becomes 5 (Math.floor applied)
+// Equivalent to: str.substring(2, 5)
+// Comparison with slice():
+console.log(str.slice(2.7, 5.9));          // "vaS" (same result)
 ```
 
 #### Edge Cases and Boundary Conditions
