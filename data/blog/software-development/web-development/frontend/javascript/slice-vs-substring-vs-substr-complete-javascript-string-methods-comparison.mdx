@@ -1020,7 +1020,7 @@ console.log(stripHTML('Plain text without tags'));
 
 ## Common Pitfalls and Mistakes
 
-### Pitfall 1: Confusing substring() with slice()
+### Pitfall 1: Confusing `substring()` with `slice()`
 
 ```javascript
 const str = "Hello World";
@@ -1035,7 +1035,7 @@ console.log(str.slice(5, 0));           // "" (empty string)
 // Solution: Use slice() consistently to avoid confusion
 ```
 
-### Pitfall 2: Using Negative Indices with substring()
+### Pitfall 2: Using Negative Indices with `substring()`
 
 ```javascript
 const str = "JavaScript"; // Length: 10
@@ -1049,7 +1049,7 @@ console.log(str.slice(-3));             // "ipt" (last 3 characters)
 console.log(str.slice(-3, -1));         // "ip" (from -3 to -1)
 ```
 
-### Pitfall 3: Using substr() with End Index Instead of Length
+### Pitfall 3: Using `substr()` with End Index Instead of Length
 
 ```javascript
 const str = "JavaScript";
@@ -1060,30 +1060,10 @@ console.log(str.slice(0, 4));           // "Java" (up to index 4, exclusive)
 
 // This difference matters!
 console.log(str.substr(4, 6));          // "Script" (6 characters from index 4)
-console.log(str.slice(4, 10));          // "Script" (from index 4 to 10)
+console.log(str.slice(4, 6));           // "Sc" (from index 4 to 6, exclusive)
 
 // Solution: Remember substr's second param is LENGTH, not end index
 // Better: Use slice() instead of substr()
-```
-
-### Pitfall 4: Not Handling Edge Cases
-
-```javascript
-function extractSubstring(str, start, end) {
-  // BAD: No validation
-  return str.substring(start, end);
-
-  // GOOD: Handle edge cases
-  if (start < 0) start = 0;
-  if (end > str.length) end = str.length;
-  if (start >= end) return '';
-  return str.slice(start, end);
-}
-
-// Or even better: use slice() which handles most edge cases gracefully
-function extractSubstringSafe(str, start, end) {
-  return str.slice(Math.max(0, start), end);
-}
 ```
 
 ## Performance Considerations
