@@ -663,8 +663,7 @@ function safeExtract(str, index) {
 }
 ```
 
-
-## Understanding substr() / String.prototype.substr() (Deprecated)
+## Understanding `substr()` / `String.prototype.substr()` (Deprecated)
 
 The `String.prototype.substr()` method (commonly called `substr()`) returns a portion of the string, starting at the specified position and extending for a given number of characters. **Important: `substr()` is deprecated and should not be used in new code.**
 
@@ -679,37 +678,14 @@ string.substr(startIndex, length)
 - **startIndex**: The index of the first character to include in the returned substring
 - **length** (optional): The number of characters to extract. If omitted, extracts to the end of the string.
 
-### Key Features of substr()
+### Key Features of `substr()`
 
 1. **Second Parameter is Length**: Unlike `slice()` and `substring()`, the second parameter is the length, not the end index
 2. **Supports Negative Start**: Negative start index counts from the end
 3. **Deprecated**: Should not be used in new code
 4. **Inconsistent with Other Methods**: Different parameter meaning causes confusion
 
-### substr() Examples
-
-```javascript
-const str = "JavaScript";
-
-// Basic usage (NOTE: second param is LENGTH, not end index!)
-console.log(str.substr(0, 4));         // "Java" (4 characters from index 0)
-console.log(str.substr(4, 6));         // "Script" (6 characters from index 4)
-console.log(str.substr(4));            // "Script" (to end)
-
-// Negative start index
-console.log(str.substr(-6));           // "Script" (last 6 characters)
-console.log(str.substr(-6, 3));        // "Scr" (3 characters starting from -6)
-
-// Edge cases
-console.log(str.substr(0, 0));         // "" (length 0)
-console.log(str.substr(0, 20));        // "JavaScript" (entire string, length capped)
-console.log(str.substr(20));           // "" (start beyond string length)
-
-// Negative start with length
-console.log(str.substr(-4, 2));        // "ip" (2 characters from 4th from end)
-```
-
-### Why substr() is Deprecated
+### Why `substr()` is Deprecated
 
 ```javascript
 // substr() has been deprecated because:
@@ -733,6 +709,29 @@ console.log(str.slice(-6));            // "Script" (recommended)
 console.log(str.substr(-6, 3));        // "Scr" (old way)
 const start = str.length + (-6);       // Calculate start index
 console.log(str.slice(start, start + 3)); // "Scr" (recommended)
+```
+
+### `substr()` Examples
+
+```javascript
+const str = "JavaScript";
+
+// Basic usage (NOTE: second param is LENGTH, not end index!)
+console.log(str.substr(0, 4));         // "Java" (4 characters from index 0)
+console.log(str.substr(4, 6));         // "Script" (6 characters from index 4)
+console.log(str.substr(4));            // "Script" (to end)
+
+// Negative start index
+console.log(str.substr(-6));           // "Script" (last 6 characters)
+console.log(str.substr(-6, 3));        // "Scr" (3 characters starting from -6)
+
+// Edge cases
+console.log(str.substr(0, 0));         // "" (length 0)
+console.log(str.substr(0, 20));        // "JavaScript" (entire string, length capped)
+console.log(str.substr(20));           // "" (start beyond string length)
+
+// Negative start with length
+console.log(str.substr(-4, 2));        // "ip" (2 characters from 4th from end)
 ```
 
 ## Side-by-Side Comparison
