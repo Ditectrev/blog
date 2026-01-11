@@ -687,29 +687,14 @@ string.substr(startIndex, length)
 
 ### Why `substr()` is Deprecated
 
-```javascript
-// substr() has been deprecated because:
-// 1. Inconsistent parameter meaning (length vs end index)
-// 2. Confusing for developers coming from slice()/substring()
-// 3. Not part of ECMAScript standard (though widely supported)
-// 4. Can be replaced with slice() in all cases
+`substr()` has been deprecated because:
 
-// Instead of substr(start, length), use:
-const str = "JavaScript";
+- **Inconsistent Parameter Meaning**: Second parameter is length (not end index like `slice()` and `substring()`)
+- **Confusing for Developers**: Different from the more commonly used `slice()` and `substring()` methods
+- **Not Part of ECMAScript Standard**: Though widely supported, it's not part of the official JavaScript specification
+- **Can Be Replaced**: All use cases can be handled with `slice()` instead
 
-// substr(4, 6) equivalent:
-console.log(str.substr(4, 6));         // "Script" (old way)
-console.log(str.slice(4, 4 + 6));      // "Script" (recommended)
-
-// substr(-6) equivalent:
-console.log(str.substr(-6));           // "Script" (old way)
-console.log(str.slice(-6));            // "Script" (recommended)
-
-// substr(-6, 3) equivalent:
-console.log(str.substr(-6, 3));        // "Scr" (old way)
-const start = str.length + (-6);       // Calculate start index
-console.log(str.slice(start, start + 3)); // "Scr" (recommended)
-```
+**Recommendation**: Use `slice()` instead of `substr()` in all cases. See migration examples in the section below.
 
 ### `substr()` Examples
 
