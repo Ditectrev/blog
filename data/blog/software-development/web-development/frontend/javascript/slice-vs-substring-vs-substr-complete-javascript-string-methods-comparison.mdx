@@ -87,7 +87,7 @@ string.slice(startIndex, endIndex)
 #### Basic Usage
 
 ```javascript
-const str = "JavaScript"; // Length: 10 characters
+const str = "JavaScript"; // Length: 10 (characters)
 // Index:    0123456789
 //           J a v a S c r i p t
 
@@ -156,7 +156,7 @@ console.log(str.slice(-8, -3));    // "vaScr"
 #### Type Coercion
 
 ```javascript
-const str = "JavaScript";
+const str = "JavaScript"; // Length: 10
 
 // Example 1: String numbers are converted to numbers
 console.log(str.slice("2", "5"));      // "vaS"
@@ -252,8 +252,7 @@ console.log(str.slice(4, -3));    // "Scri" (from index 4 to -3, which is positi
 Understanding negative indices is crucial for effective string manipulation. Here's a detailed visual explanation:
 
 ```javascript
-const str = "JavaScript";
-// String length: 10 characters
+const str = "JavaScript"; // Length: 10
 
 // Visual representation with positive indices:
 // Character:  J  a  v  a  S  c  r  i  p  t
@@ -442,7 +441,7 @@ console.log(str.slice(-8, -3));        // "vaScr" (from -8 to -3, which is indic
 #### Type Coercion (Same for `substring()` and `slice()`)
 
 ```javascript
-const str = "JavaScript";
+const str = "JavaScript"; // Length: 10
 
 // Example 1: String numbers are converted to numbers
 console.log(str.substring("2", "5"));      // "vaS"
@@ -611,7 +610,7 @@ console.log(str.slice(4, -3));          // "Scri" (from index 4 to -3, which is 
 This is where `substring()` differs significantly from `slice()`:
 
 ```javascript
-const str = "JavaScript";
+const str = "JavaScript"; // Length: 10
 
 // Example 1: Arguments automatically swapped
 console.log(str.substring(4, 0));      // "Java"
@@ -699,24 +698,51 @@ string.substr(startIndex, length)
 ### `substr()` Examples
 
 ```javascript
-const str = "JavaScript";
+const str = "JavaScript"; // Length: 10
 
 // Basic usage (NOTE: second param is LENGTH, not end index!)
 console.log(str.substr(0, 4));         // "Java" (4 characters from index 0)
+// Comparison with slice():
+console.log(str.slice(0, 4));          // "Java" (same result - from index 0 to 4, exclusive)
+// substr(0, 4) uses length 4, slice(0, 4) uses end index 4 - same result in this case
+
 console.log(str.substr(4, 6));         // "Script" (6 characters from index 4)
-console.log(str.substr(4));            // "Script" (to end)
+// Comparison with slice():
+console.log(str.slice(4, 4 + 6));      // "Script" (from index 4 to 10, exclusive)
+// substr(4, 6) uses length 6, slice(4, 10) uses end index 10 - same result
+
+console.log(str.substr(4));            // "Script" (to end - length omitted)
+// Comparison with slice():
+console.log(str.slice(4));             // "Script" (from index 4 to end - same result)
 
 // Negative start index
 console.log(str.substr(-6));           // "Script" (last 6 characters)
-console.log(str.substr(-6, 3));        // "Scr" (3 characters starting from -6)
+// Comparison with slice():
+console.log(str.slice(-6));            // "Script" (from index -6 to end - same result)
+
+console.log(str.substr(-6, -1));       // "" (empty string - negative length treated as 0)
+// Comparison with slice():
+console.log(str.slice(-6, -1));        // "Scrip" (from index -6 to -1, exclusive)
+// substr(-6, -1) uses negative length (treated as 0), slice(-6, -1) uses negative end index
 
 // Edge cases
 console.log(str.substr(0, 0));         // "" (length 0)
-console.log(str.substr(0, 20));        // "JavaScript" (entire string, length capped)
-console.log(str.substr(20));           // "" (start beyond string length)
+// Comparison with slice():
+console.log(str.slice(0, 0));          // "" (from index 0 to 0, exclusive - same result)
 
-// Negative start with length
-console.log(str.substr(-4, 2));        // "ip" (2 characters from 4th from end)
+console.log(str.substr(0, 100));       // "JavaScript" (entire string, length capped)
+// Comparison with slice():
+console.log(str.slice(0, 100));        // "JavaScript" (entire string, end index clamped - same result)
+
+console.log(str.substr(20));           // "" (start beyond string length)
+// Comparison with slice():
+console.log(str.slice(20));            // "" (start beyond string length - same result)
+
+// Negative start with negative length
+console.log(str.substr(-4, -1));       // "" (empty string - negative length treated as 0)
+// Comparison with slice():
+console.log(str.slice(-4, -1));        // "rip" (from index -4 to -1, exclusive)
+// substr(-4, -1) uses negative length (treated as 0), slice(-4, -1) uses negative end index
 ```
 
 ## Side-by-Side Comparison
@@ -1045,7 +1071,7 @@ console.log(str.slice(5, 0));           // "" (empty string)
 ### Pitfall 2: Using Negative Indices with substring()
 
 ```javascript
-const str = "JavaScript";
+const str = "JavaScript"; // Length: 10
 
 // This doesn't work as you might expect
 console.log(str.substring(-3));         // "JavaScript" (entire string, not last 3)
