@@ -784,7 +784,12 @@ console.log("\n=== Example 5: Start only (4) ===");
 console.log("slice(4):", str.slice(4));                 // "Script"
 console.log("substring(4):", str.substring(4));         // "Script"
 console.log("substr(4):", str.substr(4));               // "Script"
-```
+
+// Example 6: Positive start with negative end (substring swaps!)
+console.log("\n=== Example 6: Positive start, negative end (4, -3) ===");
+console.log("slice(4, -3):", str.slice(4, -3));         // "Scr" (from index 4 to -3, which is position 7)
+console.log("substring(4, -3):", str.substring(4, -3)); // "Java" (negative treated as 0, swaps to substring(0, 4))
+console.log("substr(4, -3):", str.substr(4, -3));       // "" (negative length treated as 0)
 
 ## Real-World Use Cases
 
