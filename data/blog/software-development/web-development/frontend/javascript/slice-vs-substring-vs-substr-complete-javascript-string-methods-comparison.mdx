@@ -1091,6 +1091,12 @@ for (let i = 0; i < 10000; i++) {
 }
 console.timeEnd('substring');
 
+console.time('substr');
+for (let i = 0; i < 10000; i++) {
+  str.substr(100, 100);
+}
+console.timeEnd('substr');
+
 // In most cases, performance difference is negligible
 // Choose based on functionality, not performance
 ```
