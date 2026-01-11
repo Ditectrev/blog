@@ -623,43 +623,6 @@ console.log(str.slice(4, 0));          // "" (empty string)
 // This is why substring() can hide bugs - it "fixes" what might be an error
 ```
 
-#### Common `substring()` Pitfalls
-
-```javascript
-// Pitfall 1: Assuming negative indices work like slice()
-function getLastThree(str) {
-  return str.substring(-3);  // WRONG! Returns entire string
-  // Should be: return str.slice(-3);
-}
-console.log(getLastThree("JavaScript")); // "JavaScript" (not "ipt"!)
-
-// Pitfall 2: Relying on argument swapping (hides bugs)
-function extractMiddle(str, start, end) {
-  // BAD: If start > end, substring() swaps, but is that what we want?
-  return str.substring(start, end);  // Might hide a logic error
-
-  // BETTER: Be explicit
-  const actualStart = Math.min(start, end);
-  const actualEnd = Math.max(start, end);
-  return str.slice(actualStart, actualEnd);
-}
-
-// Pitfall 3: NaN silently becoming 0
-function unsafeExtract(str, index) {
-  // WRONG! Both slice() and substring() treat NaN as 0, hiding the error
-  return str.substring(index);  // If index is NaN, returns from position 0!
-}
-console.log(unsafeExtract("Hello", NaN)); // "Hello" (not an error!)
-
-// BETTER: Check for invalid inputs first
-function safeExtract(str, index) {
-  if (isNaN(index)) {
-    throw new Error("Invalid index");
-  }
-  return str.substring(index);
-}
-```
-
 ## Understanding `substr()` / `String.prototype.substr()` (Deprecated)
 
 The `String.prototype.substr()` method (commonly called `substr()`) returns a portion of the string, starting at the specified position and extending for a given number of characters. **Important: `substr()` is deprecated and should not be used in new code.**
