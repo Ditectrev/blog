@@ -750,40 +750,40 @@ console.log(str.slice(-4, -1));        // "rip" (from index -4 to -1, exclusive)
 Let's compare all three methods with the same inputs to see how they differ:
 
 ```javascript
-const str = "Hello, World!";
+const str = "JavaScript"; // Length: 10
 
 console.log("Original string:", str);
 console.log("String length:", str.length);
 
 // Example 1: Basic extraction
-console.log("\n=== Example 1: slice(0, 5) ===");
-console.log("slice(0, 5):", str.slice(0, 5));           // "Hello"
-console.log("substring(0, 5):", str.substring(0, 5));   // "Hello"
-console.log("substr(0, 5):", str.substr(0, 5));         // "Hello" (5 characters)
+console.log("\n=== Example 1: Basic extraction (0, 4) ===");
+console.log("slice(0, 4):", str.slice(0, 4));           // "Java"
+console.log("substring(0, 4):", str.substring(0, 4));   // "Java"
+console.log("substr(0, 4):", str.substr(0, 4));         // "Java" (4 characters)
 
 // Example 2: Negative start
 console.log("\n=== Example 2: Negative start (-6) ===");
-console.log("slice(-6):", str.slice(-6));               // "World!"
-console.log("substring(-6):", str.substring(-6));       // "Hello, World!" (treated as 0)
-console.log("substr(-6):", str.substr(-6));             // "World!"
+console.log("slice(-6):", str.slice(-6));               // "Script"
+console.log("substring(-6):", str.substring(-6));       // "JavaScript" (treated as 0)
+console.log("substr(-6):", str.substr(-6));             // "Script"
 
 // Example 3: Start > End
-console.log("\n=== Example 3: Start > End (7, 2) ===");
-console.log("slice(7, 2):", str.slice(7, 2));           // "" (empty)
-console.log("substring(7, 2):", str.substring(7, 2));   // "llo," (swaps to substring(2, 7))
-console.log("substr(7, 2):", str.substr(7, 2));         // "Wo" (7th index, length 2)
+console.log("\n=== Example 3: Start > End (5, 3) ===");
+console.log("slice(5, 3):", str.slice(5, 3));           // "" (empty)
+console.log("substring(5, 3):", str.substring(5, 3));   // "vaS" (swaps to substring(3, 5))
+console.log("substr(5, 3):", str.substr(5, 3));         // "cri" (5th index, length 3)
 
 // Example 4: Negative end
 console.log("\n=== Example 4: Negative end (0, -6) ===");
-console.log("slice(0, -6):", str.slice(0, -6));         // "Hello,"
+console.log("slice(0, -6):", str.slice(0, -6));         // "Java"
 console.log("substring(0, -6):", str.substring(0, -6)); // "" (negative treated as 0, becomes substring(0, 0))
 console.log("substr(0, -6):", str.substr(0, -6));       // "" (negative length treated as 0)
 
 // Example 5: Omitted end parameter
-console.log("\n=== Example 5: Start only (7) ===");
-console.log("slice(7):", str.slice(7));                 // "World!"
-console.log("substring(7):", str.substring(7));         // "World!"
-console.log("substr(7):", str.substr(7));               // "World!"
+console.log("\n=== Example 5: Start only (4) ===");
+console.log("slice(4):", str.slice(4));                 // "Script"
+console.log("substring(4):", str.substring(4));         // "Script"
+console.log("substr(4):", str.substr(4));               // "Script"
 ```
 
 ## Real-World Use Cases
