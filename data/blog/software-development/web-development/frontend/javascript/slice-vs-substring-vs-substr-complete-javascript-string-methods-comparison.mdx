@@ -1084,13 +1084,14 @@ const domainOld = email.substr(email.indexOf('@') + 1);
 
 ```javascript
 // ✅ GOOD: Using negative indices with slice()
-const lastChar = str.slice(-1);              // Last character
-const lastThree = str.slice(-3);             // Last 3 characters
-const allButLast = str.slice(0, -1);         // All except last character
+const lastChar = str.slice(-1);                       // Last character
+const lastThree = str.slice(-3);                      // Last 3 characters
+const allButLast = str.slice(0, -1);                  // All except last character
 
 // ❌ AVOID: Calculating indices manually
-const lastCharOld = str[str.length - 1];     // Less readable
-const lastThreeOld = str.substring(str.length - 3); // More verbose
+const lastCharOld = str.slice(str.length - 1);        // Less readable, manual calculation
+const lastThreeOld = str.slice(str.length - 3);       // Less readable, manual calculation
+const allButLastOld = str.slice(0, str.length - 1);   // Less readable, manual calculation
 ```
 
 ### 3. Always Specify Both Parameters When Clarity Matters
@@ -1108,11 +1109,11 @@ const rest = str.slice(startIndex);
 ```javascript
 // ✅ GOOD: Understand that end index is exclusive
 const str = "Hello";
-console.log(str.slice(0, 5));        // "Hello" (indices 0,1,2,3,4)
+console.log(str.slice(0, 5));          // "Hello" (indices 0,1,2,3,4)
 console.log(str.slice(0, str.length)); // "Hello" (all characters)
 
 // Remember: end index is NOT inclusive!
-console.log(str.slice(0, 4));        // "Hell" (not "Hello")
+console.log(str.slice(0, 4));          // "Hell" (not "Hello")
 ```
 
 ### 5. Use Consistent Method Across Your Codebase
