@@ -1193,5 +1193,5 @@ Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `S
 | **Specification** | Part of official JavaScript spec | Part of official JavaScript spec | Not part of ECMAScript standard |
 | **Array API Consistency** | Consistent with `Array.slice()` | N/A | N/A |
 | **NaN Handling** | NaN treated as 0 | NaN treated as 0 | NaN treated as 0 |
-| **Type Coercion** | Coerces non-numbers; undefined defaults better | Coerces non-numbers; undefined → 0 | Coerces non-numbers |
+| **Type Coercion** | Same for all: coerces non-numbers to numbers (NaN/undefined/null → 0) | Same for all: coerces non-numbers to numbers (NaN/undefined/null → 0) | Same for all: coerces non-numbers to numbers (NaN/undefined/null → 0) |
 | **Status** | Recommended ✅ | Legacy ⚠️ | Deprecated ❌ |
