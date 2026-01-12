@@ -1066,57 +1066,6 @@ console.log(str.slice(4, 6));           // "Sc" (from index 4 to 6, exclusive)
 // Better: Use slice() instead of substr()
 ```
 
-## Performance Considerations
-
-While all three methods have similar performance characteristics, `slice()` is generally preferred because:
-
-1. **Modern Standard**: Part of ECMAScript standard
-2. **Consistent Behavior**: Predictable and intuitive
-3. **Array Compatibility**: Works similarly to `Array.slice()`, reducing cognitive load
-4. **Future-Proof**: Not deprecated, actively maintained
-
-```javascript
-// Performance is similar for all methods
-const str = "a".repeat(1000000);
-
-console.time('slice');
-for (let i = 0; i < 10000; i++) {
-  str.slice(100, 200);
-}
-console.timeEnd('slice');
-
-console.time('substring');
-for (let i = 0; i < 10000; i++) {
-  str.substring(100, 200);
-}
-console.timeEnd('substring');
-
-console.time('substr');
-for (let i = 0; i < 10000; i++) {
-  str.substr(100, 100);
-}
-console.timeEnd('substr');
-
-// In most cases, performance difference is negligible
-// Choose based on functionality, not performance
-```
-
-## Browser Compatibility
-
-All three methods are widely supported:
-
-- **`slice()`**: Supported in all modern browsers (IE4+), part of ECMAScript 3 standard
-- **`substring()`**: Supported in all modern browsers (IE3+), part of ECMAScript 1 standard
-- **`substr()`**: Supported but deprecated (IE3+, but should not be used), not part of ECMAScript standard
-
-For modern JavaScript development, `slice()` is the recommended choice as it's part of the ECMAScript standard and has the most intuitive behavior.
-
-## Further Learning Resources
-
-Mastering JavaScript string methods is just one piece of becoming a proficient JavaScript developer. If you're looking to deepen your JavaScript knowledge and build real-world applications, there are excellent learning resources available.
-
-For developers who prefer interactive, text-based learning over video tutorials, the [Complete JavaScript Course: Build a Real World App from Scratch](https://www.educative.io/courses/the-complete-javascript-course-build-a-real-world-app-from-scratch?aff=VALz) on Educative offers a video-free, hands-on approach with embedded code editors and immediate feedback. If you prefer video-based learning from industry experts, the [Programming with JavaScript](https://imp.i384100.net/YRXbYJ) course by Meta on Coursera provides structured video lectures as part of Meta's Front-End Developer Professional Certificate program.
-
 ## Best Practices
 
 ### 1. Prefer slice() Over substring() and substr()
@@ -1185,6 +1134,57 @@ function processStringInconsistent(str) {
   return { first, middle, last };
 }
 ```
+
+## Performance Considerations
+
+While all three methods have similar performance characteristics, `slice()` is generally preferred because:
+
+1. **Modern Standard**: Part of ECMAScript standard
+2. **Consistent Behavior**: Predictable and intuitive
+3. **Array Compatibility**: Works similarly to `Array.slice()`, reducing cognitive load
+4. **Future-Proof**: Not deprecated, actively maintained
+
+```javascript
+// Performance is similar for all methods
+const str = "a".repeat(1000000);
+
+console.time('slice');
+for (let i = 0; i < 10000; i++) {
+  str.slice(100, 200);
+}
+console.timeEnd('slice');
+
+console.time('substring');
+for (let i = 0; i < 10000; i++) {
+  str.substring(100, 200);
+}
+console.timeEnd('substring');
+
+console.time('substr');
+for (let i = 0; i < 10000; i++) {
+  str.substr(100, 100);
+}
+console.timeEnd('substr');
+
+// In most cases, performance difference is negligible
+// Choose based on functionality, not performance
+```
+
+## Browser Compatibility
+
+All three methods are widely supported:
+
+- **`slice()`**: Supported in all modern browsers (IE4+), part of ECMAScript 3 standard
+- **`substring()`**: Supported in all modern browsers (IE3+), part of ECMAScript 1 standard
+- **`substr()`**: Supported but deprecated (IE3+, but should not be used), not part of ECMAScript standard
+
+For modern JavaScript development, `slice()` is the recommended choice as it's part of the ECMAScript standard and has the most intuitive behavior.
+
+## Further Learning Resources
+
+Mastering JavaScript string methods is just one piece of becoming a proficient JavaScript developer. If you're looking to deepen your JavaScript knowledge and build real-world applications, there are excellent learning resources available.
+
+For developers who prefer interactive, text-based learning over video tutorials, the [Complete JavaScript Course: Build a Real World App from Scratch](https://www.educative.io/courses/the-complete-javascript-course-build-a-real-world-app-from-scratch?aff=VALz) on Educative offers a video-free, hands-on approach with embedded code editors and immediate feedback. If you prefer video-based learning from industry experts, the [Programming with JavaScript](https://imp.i384100.net/YRXbYJ) course by Meta on Coursera provides structured video lectures as part of Meta's Front-End Developer Professional Certificate program.
 
 ## Conclusion
 
