@@ -1188,7 +1188,7 @@ Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `S
 | **Second Parameter** | End index (exclusive) | End index (exclusive) | Length of substring |
 | **Negative Index** | Supported (counts from end) | Not supported (treated as 0) | Supported (start only) |
 | **Swaps Arguments** | No | Yes (if start > end) | No |
-| **Start > End** | Returns empty string | Swaps arguments | Works as expected |
+| **Start > End** | Returns empty string | Swaps arguments | N/A (second param is length, not end index) |
 | **ECMAScript Version** | ES3+ (modern standard) | ES1 (legacy) | Not part of standard |
 | **Specification** | Part of official JavaScript spec | Part of official JavaScript spec | Not part of ECMAScript standard |
 | **Array API Consistency** | Consistent with `Array.slice()` | N/A | N/A |
