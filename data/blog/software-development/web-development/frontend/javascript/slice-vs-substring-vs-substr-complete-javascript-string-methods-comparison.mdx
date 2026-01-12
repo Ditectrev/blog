@@ -1,6 +1,6 @@
 ---
 title: 'slice() vs substring() vs substr(): Complete JavaScript String Methods Comparison'
-date: '2026-01-16'
+date: '2026-01-12'
 tags: ['frontend', 'javascript', 'software development', 'web development']
 draft: false
 summary: 'Comprehensive comparison of JavaScript string methods: String.prototype.slice(), String.prototype.substring(), and String.prototype.substr(). Learn the differences between slice(), substring(), and substr(), when to use each method, common pitfalls, and best practices with detailed code examples.'
@@ -30,19 +30,6 @@ This comprehensive guide will provide an in-depth exploration of each method, co
 - **Integration patterns** with other JavaScript string methods
 
 By the end of this article, you'll not only understand each method's behavior but also gain the expertise to choose the right method for your specific use case, write more robust code, and debug string manipulation issues effectively.
-
-## Quick Comparison Table
-
-Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`):
-
-| Feature | `slice()` / `String.prototype.slice()` | `substring()` / `String.prototype.substring()` | `substr()` / `String.prototype.substr()` |
-|---------|-----------|---------------|------------|
-| **Syntax** | `slice(start, end)` | `substring(start, end)` | `substr(start, length)` |
-| **Second Parameter** | End index (exclusive) | End index (exclusive) | Length of substring |
-| **Negative Index** | Supported (counts from end) | Not supported (treated as 0) | Supported (start only) |
-| **Swaps Arguments** | No | Yes (if start > end) | No |
-| **Start > End** | Returns empty string | Swaps arguments | Works as expected |
-| **Status** | Recommended ✅ | Supported ⚠️ | Deprecated ❌ |
 
 ## Understanding `slice()` / `String.prototype.slice()`
 
@@ -1191,53 +1178,20 @@ For developers who prefer interactive, text-based learning over video tutorials,
 
 Understanding the differences between `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`) is crucial for writing clean, maintainable JavaScript code. Throughout this comprehensive guide, we've explored the intricate behaviors of each method, their use cases, pitfalls, and best practices.
 
-## Key Takeaways
+## Quick Comparison Table
 
-### Method Comparison Summary
+Comparison of `String.prototype.slice()`, `String.prototype.substring()`, and `String.prototype.substr()` (commonly used as `slice()`, `substring()`, and `substr()`):
 
-- **`slice()` / `String.prototype.slice()`** ⭐ **RECOMMENDED**:
-  - Supports negative indices (counts from end of string)
-  - Predictable behavior (no argument swapping)
-  - Modern ECMAScript standard (ES3+)
-  - Consistent with `Array.slice()` API
-  - End index is exclusive (not included in result)
-  - Returns empty string when start > end
-  - Part of official JavaScript specification
-
-- **`substring()` / `String.prototype.substring()`** ⚠️ **LEGACY**:
-  - Does NOT support negative indices (treated as 0)
-  - Automatically swaps arguments when start > end (can hide bugs)
-  - Older method (ES1), still supported but less intuitive
-  - NaN values are treated as 0
-  - End index is exclusive (same as slice)
-  - May lead to unexpected results in edge cases
-
-- **`substr()` / `String.prototype.substr()`** ❌ **DEPRECATED**:
-  - Second parameter is LENGTH (not end index) - major difference!
-  - Supports negative start index only
-  - Deprecated and should NOT be used in new code
-  - Not part of ECMAScript standard (though widely supported)
-  - Can be replaced with `slice()` in all cases
-  - Confusing parameter semantics
-
-### Critical Differences to Remember
-
-1. **Parameter Semantics**:
-   - `slice(start, end)`: end is exclusive index
-   - `substring(start, end)`: end is exclusive index (but swaps if start > end)
-   - `substr(start, length)`: second param is LENGTH, not index!
-
-2. **Negative Index Handling**:
-   - `slice()`: Negative indices count from end (intuitive)
-   - `substring()`: Negative indices become 0 (loses information)
-   - `substr()`: Negative start counts from end, but second param is still length
-
-3. **Argument Order Behavior**:
-   - `slice()`: If start > end, returns empty string
-   - `substring()`: If start > end, automatically swaps arguments
-   - `substr()`: Length parameter makes this less relevant
-
-4. **Type Coercion**:
-   - All methods coerce non-number types to numbers
-   - `slice()` and `substring()` handle undefined differently (slice defaults better)
-   - NaN becomes 0 in all methods
+| Feature | `slice()` / `String.prototype.slice()` | `substring()` / `String.prototype.substring()` | `substr()` / `String.prototype.substr()` |
+|---------|-----------|---------------|------------|
+| **Syntax** | `slice(start, end)` | `substring(start, end)` | `substr(start, length)` |
+| **Second Parameter** | End index (exclusive) | End index (exclusive) | Length of substring |
+| **Negative Index** | Supported (counts from end) | Not supported (treated as 0) | Supported (start only) |
+| **Swaps Arguments** | No | Yes (if start > end) | No |
+| **Start > End** | Returns empty string | Swaps arguments | Works as expected |
+| **ECMAScript Version** | ES3+ (modern standard) | ES1 (legacy) | Not part of standard |
+| **Specification** | Part of official JavaScript spec | Part of official JavaScript spec | Not part of ECMAScript standard |
+| **Array API Consistency** | Consistent with `Array.slice()` | N/A | N/A |
+| **NaN Handling** | NaN treated as 0 | NaN treated as 0 | NaN treated as 0 |
+| **Type Coercion** | Coerces non-numbers; undefined defaults better | Coerces non-numbers; undefined → 0 | Coerces non-numbers |
+| **Status** | Recommended ✅ | Legacy ⚠️ | Deprecated ❌ |
